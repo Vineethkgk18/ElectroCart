@@ -8,10 +8,13 @@
 							<table class="table-shopping-cart">
 								<tr class="table_head">
 									<th class="column-1">Product</th>
-									<th class="column-2">Price</th>									
-									<th class="column-3">Quantity</th>
-									<th class="column-4">Total</th>
+									<th class="column-2"></th>
+									<th class="column-3">Price</th>									
+									<th class="column-4">Quantity</th>
+									{{!-- <th class="column-4">Total</th> --}}
+									{{!-- <th class="column-5"> </th> --}}
 									<th class="column-5">Remove </th>
+									<th class="column-6"> </th>
 								</tr>
 								{{#each Products}}
 								
@@ -32,13 +35,13 @@
 											</div>
 
 											{{!-- <input class="mtext-104 cl3 txt-center num-product"  type="number" name="num-product1" id="{{this.product._id}}" value="{{this.quantity}}" > --}}
-												<span class="mtext-104 cl3 txt-center num-product"  type="number" name="num-product1"  id="{{this.product._id}}">{{this.quantity}} </span>
+												<span class="mtext-105 cl3  txt-center num-product "  type="number" name="num-product1"  id="{{this.product._id}}">{{this.quantity}} </span>
 											<div class="btn-num-product-up cl8 hov-btn1 trans-04 flex-c-m">
 												<i class="fs-16 zmdi zmdi-plus" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user._id}}',1)"></i>
 											</div>
 										</div>
 									</td>
-									
+									{{!-- <td class="column-5"></td> --}}
 									<td class="column-5 w3-large "> <i class="fa fa-trash fa-2x hov-btn1 " style="color:red" ></i> </td>
 								</tr>
 								{{/each}}

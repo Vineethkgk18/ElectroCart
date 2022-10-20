@@ -12,7 +12,7 @@ module.exports={
         let category = await userHelpers.getCategory();
         let wishListCount = await userHelpers.wishListCount(userId)
        // console.log("AAAAAAAAAA____cartCount",cartCount)        
-            res.render('userpages/userHome',{users:true,user,products,category,cartCount,wishListCount})
+            res.render('userpages/userHome',{users:true,orderSuccess:true,user,products,category,cartCount,wishListCount})
     },
     getUserLogin: (req,res)=>{
         if(req.session.loggedIn)
@@ -20,7 +20,7 @@ module.exports={
             //console.log("ZZZZZZZZZZZZZZZZ_____req_session", req,session);
             res.redirect('/')
         }else{
-            res.render('userpages/user-login',{users:true})//,{"loginError": req.session.loginError})
+            res.render('userpages/user-login',{users:true,orderSuccess:true})//,{"loginError": req.session.loginError})
             req.session.loginError = false;
         }
     },
@@ -49,7 +49,7 @@ module.exports={
 
 
     getUserSignUp: (req,res) => {
-        res.render('userpages/user-signup',{users:false})
+        res.render('userpages/user-signup',{users:false,})
     },
 
     postUserSignUp: async (req,res) => {

@@ -1,0 +1,91 @@
+	<!-- Shoping Cart -->
+	<form class="bg0 p-t-75 p-b-85">
+		<div class="container">
+			<div class="row">
+				{{!-- <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl"> --}}
+				{{!-- <div class="col-lg-10 col-xl-7 m-lr-auto m-b-50">
+					<div class="m-l-25 m-r--38 m-lr-0-xl"> --}}
+						{{!-- <div class="wrap-table-shopping-cart">
+							<table class="table-shopping-cart">							
+							</table>
+						</div> --}}
+
+						<table class="table table-striped mt-5 p-t-75 pb-5">
+								<thead>
+									<tr>
+										<th scope="col">Sl No</th>
+										<th scope="col">Date</th>
+										<th scope="col">Address</th>
+										<th scope="col">Pincode</th>
+										<th scope="col">Mobile</th>
+										<th scope="col">Amount</th>
+										<th scope="col">Payment</th>
+										<th scope="col">Status</th>
+										<th scope="col"></th>
+										{{!-- <th scope="col">Status</th> --}}
+										{{!-- <th scope="col">
+											<a href=" " ><button>View Product</button></a>
+										</th> --}}
+									</tr>
+								</thead>
+								<tbody>
+									{{#with order}}
+									{{orderdate}}
+										<tr>
+											<th scope="row">{{increment @index}}</th>
+											<td>{{this.date}}</td>
+											<td>{{this.deliveryDetails.Address}}</td>
+											<td>{{this.deliveryDetails.Pincode}}</td>
+											<td>{{this.deliveryDetails.Mobile}}</td>
+											<td>{{this.totalAmount}}</td>
+											<td>{{this.paymentMethod}}</td>
+											<td>{{this.status}}</td>
+											<td>
+												<a href="viewOrderProducts/{{this._id}}" class="btn btn-primary">View Products </a>
+											</td>
+
+										</tr>
+									{{/with}}
+								</tbody>
+								</table>
+
+{{!-- 						
+					</div>
+				</div> --}}
+
+				
+			</div>
+		</div>
+	</form>
+
+
+	<script>
+		function changeQuantity(cartId,proId,userId,count)
+		{
+			let quantity= parseInt(document.getElementById(proId).innerHTML)
+			count=parseInt(count)
+			$.ajax({
+				url:'/changeProductQuantity',
+				data:{
+					user:userId,
+					cart:cartId,
+					product:proId,				
+					count:count,
+					quantity:quantity
+				},
+				method:'post',
+				success:(response)=>{
+					if(response.removeProduct){
+						alert("Product Removed from cart")
+						location.reload()
+					}else{
+						document.getElementById(proId).innerHTML=quantity+count
+						document.getElementById('total').innerHTML=response.total
+					}
+				}
+			})
+		}
+	 
+
+	</script>

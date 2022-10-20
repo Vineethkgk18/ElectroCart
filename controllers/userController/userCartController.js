@@ -21,11 +21,17 @@ module.exports ={
         let Products = await userHelpers.getCartProducts(userId)
         let totalPrice = await userHelpers.getTotoalPrice(userId)
         let wProducts = await userHelpers.getWishListProducts(userId)
-        let cartCount = await userHelpers.getCartCount(userId)
-       // console.log("OOOOOOOOOO_Products",Products)
-        //Product_Name
-        
-      res.render('userpages/userShoppingCart',{Products,users:true,user,totalPrice,wProducts,cartCount})
+        let cartCount = await userHelpers.getCartCount(userId) 
+        let wishListCount = await userHelpers.wishListCount(userId)       
+        res.render('userpages/userShoppingCart',{Products,users:true,orderSuccess:true,user,totalPrice,wProducts,cartCount,wishListCount})
+      },
+      postChangeProductQuantity:(req,res,next) =>{
+         // console.log("req_body",req.body)
+          userHelpers.changeProductQuantity(req.body).then(async(response)=>{
+          response.total = await userHelpers.getTotoalPrice(req.body.user)
+          res.json(response)
+        })
       }
+      
 
 }

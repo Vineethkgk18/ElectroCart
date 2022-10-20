@@ -59,6 +59,15 @@ router.post('/adminEditProduct', upload.array('Image',4), adminpController.postE
 //----------delete Product -----------------------------
 router.get('/deleteProduct/:id', adminpController.getDeleteProduct)
 
+router.get('/order',(req,res)=>{
+
+  res.render('adminpages/adminOrderManagement')
+})
+router.get('/coupon',(req,res)=>{
+
+  res.render('adminpages/adminCouponManagement')
+})
+
 module.exports = router;  
 
 

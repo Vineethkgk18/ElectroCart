@@ -1,0 +1,33 @@
+<table class="table table-striped mt-5 p-t-75 pb-5">
+  <thead>
+    <tr>
+      <th scope="col">Sl No</th>
+      <th scope="col">Date</th>
+      <th scope="col">Address</th>
+      <th scope="col">Pincode</th>
+      <th scope="col">Mobile</th>
+      <th scope="col">Amount</th>
+      <th scope="col">Payment</th>
+      <th scope="col">Status</th>
+      <th scope="col">
+        <a href=" " ><button>View Product</button></a>
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#with order}}
+    {{orderdate}}
+    <tr>
+      <th scope="row">{{increment @index}}</th>
+      <td>{{this.date}}</td>
+      <td>{{this.deliveryDetails.Address}}</td>
+      <td>{{this.deliveryDetails.Pincode}}</td>
+      <td>{{this.deliveryDetails.Mobile}}</td>
+      <td>{{this.totalAmount}}</td>
+      <td>{{this.paymentMethod}}</td>
+      <td>{{this.status}}</td>
+    </tr>
+    {{/with}}
+    
+  </tbody>
+</table>
