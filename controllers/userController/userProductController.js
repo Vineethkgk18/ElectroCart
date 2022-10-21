@@ -5,7 +5,18 @@ const twilioHelpers = require('../../helpers/twilioHelpers')
 const session = require('express-session');
 
 
-module.exports ={    
+module.exports ={  
+    getAllProductsView: async(req,res)=>{
+        //let catId=req.params.id;
+        let userId=req.session.user._id
+        let user = req.session.user;
+        let cartCount = await userHelpers.getCartCount(userId)
+        let products = await userHelpers.getProducts();
+        let category = await userHelpers.getCategory();
+        console.log("category:",category)
+        let wishListCount = await userHelpers.wishListCount(userId)
+        res.render('userpages/userAllProducts',{products,cartCount,category,wishListCount })
+    }, 
     getCategoryView: async (req,res) => {
         let catId=req.params.id;
         let userId=req.session.user._id

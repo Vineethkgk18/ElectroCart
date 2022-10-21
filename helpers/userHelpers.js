@@ -108,13 +108,13 @@ module.exports={
             })
     },
     addToCart: (proId,userId)=>{
-                    console.log("1111111111")
+                    //console.log("1111111111")
         let proObj = {
             item: objectId(proId),
             quantity:1
         }
        return new Promise (async (resolve,reject) =>{
-        console.log("2222222222");
+        //console.log("2222222222");
         let userCart = await db.get().collection(collection.CART_COLLECTION).findOne({user:objectId(userId)}) 
         // .then((resopnse)=>{
             //console.log("333333333333__userCart",userCart);
@@ -151,7 +151,7 @@ module.exports={
                 }
 
                 db.get().collection(collection.CART_COLLECTION).insertOne(cartObj).then((response)=>{
-                    console.log("QQQQQQQQQQQQQQQQQ_____response", response)
+                    //console.log("QQQQQQQQQQQQQQQQQ_____response", response)
                     //resolve(response)
                     resolve()
                 })
@@ -470,42 +470,6 @@ getOrderProducts: (orderId)=>{
         ///resolve(cartItems)
     })
 },
-generatedRazorPay:(orderId,total) =>{
-    return new Promise( (resolve,reject)=>{
-        try{
-            var options = {
-                amount: total,  // amount in the smallest currency unit
-                currency: "INR",
-                receipt: ""+orderId
-              };
-              instance.orders.create(options, function(err, order) {
-                if(err)
-                {
-                    console.log("err",err)
-                }
-                else{
-                    console.log("New order check ------",order);
-                resolve(order)
-                }
-                
-              });
-
-
-
-
-
-
-        }
-        catch{
-
-        }
-
-        
-    })
-  }
-
-
-}
 
 /*
 let wishListItems = await db.get().collection(collection.WISHLIST_COLLECTION).aggregate([
@@ -535,4 +499,70 @@ let wishListItems = await db.get().collection(collection.WISHLIST_COLLECTION).ag
         }
     }    
      *
-    **/            
+    **/        
+generatedRazorPay:(orderId,total) =>{
+    return new Promise( (resolve,reject)=>{
+        try{
+            var options = {
+                amount: total*100,  // amount in the smallest currency unit
+                currency: "INR",
+                receipt: ""+orderId
+              };
+              instance.orders.create(options, function(err, order) {
+                if(err)
+                {
+                    console.log("err",err)
+                }
+                else{
+                   // console.log("New order check ------",order);
+                resolve(order)
+                }
+                
+              });
+
+        }
+        catch{
+
+        }   
+    })
+  },
+  verifyPaymentResult:(paymentDetails)=>{
+    console.log("paymentDetails",paymentDetails)
+    return new Promise( (resolve,reject) =>{
+        try{
+            const crypto = require('crypto');
+            console.log("YOUR_KEY_SECRET:",YOUR_KEY_SECRET)
+            let hmac = crypto.createHmac('sha256', YOUR_KEY_SECRET)
+            hmac.update(paymentDetails['payment[razorpay_order_id]']+'|'+paymentDetails['payment[razorpay_payment_id]']);
+            hmac=hmac.digest('hex')
+            console.log("XXXXXXXXXXXXXXXXXXXXXXXXXXXX")
+            if(hmac==paymentDetails['payment[razorpay_signature]']){
+                console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZ")
+                resolve()
+            }else{
+                reject()
+            }
+        }catch{}
+    })
+
+  },
+  changePaymentStatus:(orderId)=>{
+    return new Promise( (resolve,reject)=>{
+        db.get().collection(collection.ORDER_COLLECTION)
+        .updateOne({_id:objectId(orderId)},
+        {
+            $set: {
+                status:'placed'
+            }
+        }
+        ).then( ()=>{
+            resolve()
+        })
+    })
+
+  }
+
+
+}
+
+    

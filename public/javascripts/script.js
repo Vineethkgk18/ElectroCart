@@ -23,7 +23,7 @@
 						w_count=parseInt(w_count)+1
 						$("#wishListCount").html(w_count)
 					}
-					alert("Product Added to Wishlist")
+					//alert("Product Added to Wishlist")
 				}				
 			})
 		}
