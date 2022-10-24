@@ -137,6 +137,50 @@ updateProducts:(product_info)=>{
         })
     })
 
+},
+getOrderDetails:()=>{
+    return new Promise((resolve,reject)=>{
+         db.get().collection(collection.ORDER_COLLECTION).find().toArray().then((response)=>{
+            //console.log("XcxcxcXcX:",response)
+            resolve(response)
+         })
+    })
+},
+changeOrderStatus:(status,orderId)=>{
+    console.log("ZZZZZZZZ____status", status)
+    return new Promise( (resolve,reject)=>{
+        db.get().collection(collection.ORDER_COLLECTION).updateOne({_id:objectId(orderId)},
+        {
+            $set:{status: status}
+        }).then((response) =>{
+            //console.log("update.response:",response)
+            resolve()
+     })
+    })
+},
+addCoupon:(couponData)=>{
+    return new Promise( (resolve, reject)=>{
+        db.get().collection(collection.COUPON_COLLECTION).insertOne(couponData).then( (response)=>{
+            //console.log("GGGGGGGGG_response:", response)
+            resolve()
+        })
+    })
+},
+getCouponCollection:()=>{
+    return new Promise( (resolve,reject) =>{
+        db.get().collection(collection.COUPON_COLLECTION).find().toArray().then( (response)=>{
+            console.log("Coupon Data:", response)
+            resolve(response)
+        })
+    })
+},
+deleteCoupon:(couponId)=>{
+    return new Promise( (resolve,reject)=>{
+        db.get().collection(collection.COUPON_COLLECTION).deleteOne({_id:objectId(couponId)}).then( ()=>{
+            resolve()
+        })
+    })
+
 }
 
     

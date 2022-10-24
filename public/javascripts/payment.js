@@ -31,6 +31,19 @@
     })
   }
 
+  function discount(couponId){
+   // alert('hi',couponId)
+    console.log("Australia")
+    console.log(couponId)
+  }
+
+  function myFunction() {
+    alert("hello")
+    var x = document.getElementById("flexRadioCoupon").value;
+    alert("hello")
+    console.log("hello")
+    //document.getElementById("demo").innerHTML = x;
+  }
 
   function confirmOrderButton(){
     ///e.preventDefault()

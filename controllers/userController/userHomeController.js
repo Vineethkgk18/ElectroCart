@@ -1,5 +1,10 @@
 const userHelpers = require('../../helpers/userHelpers')
+const loginHelpers = require('../../helpers/userHelpers/loginHelpers')
+const categoryHelpers = require('../../helpers/userHelpers/categoryHelpers')
+const productHelpers = require('../../helpers/userHelpers/productHelpers')
+const cartHelpers = require('../../helpers/userHelpers/categoryHelpers')
 const twilioHelpers = require('../../helpers/twilioHelpers')
+
 const session = require('express-session');
 
 module.exports={
@@ -8,8 +13,8 @@ module.exports={
         let user = req.session.user;
         //console.log("ZZZZZZZZZZZZZZ_session", req.session);
         let cartCount = await userHelpers.getCartCount(userId)
-        let products = await userHelpers.getProducts();
-        let category = await userHelpers.getCategory();
+        let products = await productHelpers.getProducts();
+        let category = await categoryHelpers.getCategory();
         let wishListCount = await userHelpers.wishListCount(userId)
        // console.log("AAAAAAAAAA____cartCount",cartCount)        
             res.render('userpages/userHome',{users:true,orderSuccess:true,user,products,category,cartCount,wishListCount})
@@ -25,7 +30,7 @@ module.exports={
         }
     },
     postUserLogin: (req,res) => {
-        userHelpers.doLogin(req.body).then((response)=>{
+        loginHelpers.doLogin(req.body).then((response)=>{
           if(response.status){
             req.session.loggedIn=true;
             req.session.user=response.user
@@ -54,7 +59,7 @@ module.exports={
 
     postUserSignUp: async (req,res) => {
         req.session.signUpData = req.body;
-        let userEmail = await userHelpers.verifyEmail(req.body.Email);
+        let userEmail = await loginHelpers.verifyEmail(req.body.Email);
         if(userEmail){
              console.log(" ERROR User Exists")
              res.redirect('/signup')
@@ -71,7 +76,7 @@ module.exports={
         let veryOtp = await twilioHelpers.otpVerify(otpData,userData)
         //console.log("veryOtp:",veryOtp);
       if(veryOtp){
-          userHelpers.doSignup(userData).then((response) => {
+          loginHelpers.doSignup(userData).then((response) => {
                 res.redirect('/login')
         })
       }else{

@@ -76,10 +76,11 @@
                     -- </div> --}}
                     <a href="/admin/category" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Category</a>
                     <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Product</a>
-                    <a href="form.html" class="nav-item nav-link"><i class="fa fa-keyboard me-2"></i>Forms</a>
-                    <a href="table.html" class="nav-item nav-link"><i class="fa fa-table me-2"></i>Tables</a>
-                    <a href="chart.html" class="nav-item nav-link"><i class="fa fa-chart-bar me-2"></i>Charts</a>
-                    <div class="nav-item dropdown">
+                    <a href="/admin/coupon" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Coupon</a>
+                    <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Order</a>
+
+                    
+                    {{!-- <div class="nav-item dropdown">
                         <a href="#" class="nav-link dropdown-toggle active" data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
                         <div class="dropdown-menu bg-transparent border-0">
                             <a href="signin.html" class="dropdown-item">Sign In</a>
@@ -87,7 +88,7 @@
                             <a href="404.html" class="dropdown-item">404 Error</a>
                             <a href="blank.html" class="dropdown-item active">Blank Page</a>
                         </div>
-                    </div>
+                    </div> --}}
                 </div>
             </nav>
         </div>
@@ -186,7 +187,7 @@
             </nav>
             <!-- Navbar End -->
 
-
+            
             <!-- Blank Start -->
             <div class="container-fluid pt-4 px-4">
                 {{!-- <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0"></div> --}}
@@ -198,35 +199,59 @@
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
                             <h6 class="mb-4">Order Management</h6>
-                            <div class="row mt-4 mb-4 ">
+                            {{!-- <div class="row mt-4 mb-4 ">
                             <a href="/admin/addProduct" class="btn btn-success w-25 ml-auto " style="justify-content:right ;" >Add Product </a>
-                            </div>
+                            </div> --}}
                             {{!-- <a href="#" <button> </button> --}}
                             <div class="table-responsive">
-                                <table class="table">
+                                {{!-- <table id="example" class="table table-dark"></table> --}}
+                                <table class="table table-dark">
                                     <thead>
                                         <tr>
                                             <th scope="col">Sl No</th>
-                                            <th scope="col">User Name</th>                                        
-                                            <th scope="col">Email Id</th>
-                                            <th scope="col">Order Id</th>
-                                            <th scope="col">Payment Method</th>                                            
+                                            {{!-- <th scope="col">User Name</th>                                         --}}
+                                            <th scope="col">Mobile No</th>
+                                            <th scope="col">Payment Method</th>
+                                            <th scope="col">Order Id</th>                                                                                        
                                             <th scope="col">Date</th>
                                             <th scope="col">Status</th>
+                                            <th scope="col"> more </th>
+                                            {{!-- <th scope="col">Status</th> --}}
+                                            {{!-- <th scope="col">User Name</th> --}}
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{#each products}}
+                                        {{#each order}}
+                                        {{!-- <h1> {{"status"}} </h1> --}}
                                         <tr>                                            
                                             <th scope="row">{{ increment @index}}</th>                                            
-                                            <td>{{this.Product_Name}}</td>                                            
-                                            <td>{{this.Product_Details}}</td>
-                                            <td>{{this.Price}}</td>
-                                            <td>{{this.CategoryName}}    </td>
-                                            <td class="column-1"> <img width="50" height="60" src="/Admin/uploadedImage/{{this.Images.[0]}}" alt="IMG-PRODUCT">   </td>                                           
-                                            <td><a href="/admin/editProduct/{{this._id}}"> <button type="button" class="btn btn-warning "> EDIT </button> </a>
-                                            <a href="/admin/deleteProduct/{{this._id}}"> <button type="button" class="btn btn-danger "> DELETE </button>
+                                            <td>{{this.deliveryDetails.Mobile}}</td>                                            
+                                            <td>{{this.paymentMethod}}</td>
+                                            <td>{{this._id}}</td>
+                                            <td>{{this.date}}</td>
+                                            <td id="pstatus">{{this.status}}</td>
+                                            <td>
+                                                {{#if (eqPlaced this.status)}}
+                                                <a href="/admin/item-packed/{{this._id}}" class="btn btn-success" >packed</a>
+                                                {{else}}{{#if (eqPacked this.status)}}
+                                                <a href="/admin/item-shipped/{{this._id}}" class="btn btn-danger" >Shipped</a>
+                                                {{else}}{{#if (eqShipped this.status)}}
+                                                <a href="/admin/item-delivered/{{this._id}}" class="btn btn-danger" >Delivered</a>
+                                           
+                                                {{/if}}
+                                                {{/if}}
+                                                {{/if}}
+                                                
                                             </td>
+                                            
+
+
+
+                                            {{!-- <td><button onclick="myStatus('{{this._id}}')" id="bstatus"  class="btn btn-light">{{this.status}}  </button></td> --}}
+                                            
+                                            {{!-- <td class="column-1"> <img width="50" height="60" src="/Admin/uploadedImage/{{this.Images.[0]}}" alt="IMG-PRODUCT">   </td>                                           
+                                            <td><a href="/admin/editProduct/{{this._id}}"> <button type="button" class="btn btn-warning "> EDIT </button> </a>
+                                            <a href="/admin/deleteProduct/{{this._id}}"> <button type="button" class="btn btn-danger "> DELETE </button></td> --}}
                                             
                                         </tr>
                                         {{/each}}
@@ -277,6 +302,7 @@
     </div>
 
     <!-- JavaScript Libraries -->
+    <script src="/Admin/js/paymentStatus.js"> </script>
     <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="/Admin/lib/chart/chart.min.js"></script>
@@ -289,6 +315,13 @@
 
     <!-- Template Javascript -->
     <script src="/Admin/js/main.js"></script>
+    {{!-- <script>
+        $(document).ready(function() {
+        $('#example').DataTable();
+        });
+    </script> --}}
+    
+
 </body>
 
 </html>

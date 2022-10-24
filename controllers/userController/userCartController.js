@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const userHelpers = require('../../helpers/userHelpers')
+const categoryHelpers = require('../../helpers/userHelpers/categoryHelpers')
+const productHelpers = require('../../helpers/userHelpers/productHelpers')
+const cartHelpers = require('../../helpers/userHelpers/categoryHelpers')
 const twilioHelpers = require('../../helpers/twilioHelpers')
 const session = require('express-session');
 

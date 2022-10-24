@@ -30,8 +30,8 @@
 									</tr>
 								</thead>
 								<tbody>
-									{{#with order}}
-									{{orderdate}}
+									{{#each order}}
+									{{!-- {{orderdate}} --}}
 										<tr>
 											<th scope="row">{{increment @index}}</th>
 											<td>{{this.date}}</td>
@@ -46,7 +46,7 @@
 											</td>
 
 										</tr>
-									{{/with}}
+									{{/each}}
 								</tbody>
 								</table>
 

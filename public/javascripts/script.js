@@ -1,4 +1,5 @@
        		function addToCart(proId){
+				
 			$.ajax({
 				url:'/addToCart/'+proId,
 				method:'get',
@@ -8,7 +9,9 @@
 						count=parseInt(count)+1
 						$("#cartCount").html(count)
 					}
-					alert("Product Added to cart")
+					//alert("Product Added to cart")
+					//swal(nameProduct, "is added to wishlist !", "success");
+					swal( "added to Cart !", "success");
 				}
 			})
 		}

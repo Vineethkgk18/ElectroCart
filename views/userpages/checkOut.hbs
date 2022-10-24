@@ -13,11 +13,11 @@
                     <div class="card pl-3 pt-1 pb-1 m-1" style="width: 18rem;">
                     <div class="card-body">
                     <div class="form-check">
-                        <input type="radio" onclick="billingAddress('{{this.addId}}')" class="form-check-input" id="radio1"
+                        <input type="radio" onclick="billingAddress('{{this.addId}}')" class="form-check-input " id="radio1"
                         name="optradio" value="">
-                        <label class="form-check-label" for="radio1"></label>
+                        <label class="form-check-label pt-3 " for="radio1"></label>
                     </div>
-                    <h5 class="card-title">{{this.Name}}</h5>
+                    <h5 class="card-title ">{{this.Name}}</h5>
                     <h6 class="card-subtitle mb-1 text-muted">ph: {{this.mobile}}</h6>
                     <p class="card-text">address: {{this.Address}}</p>
                     <p class="card-text">zip: {{this.Pincode}}</p>
@@ -143,19 +143,66 @@
             <span class="text-muted">$5</span>
           </li>  --}}
 
-          {{!-- ############################################3 --}}
+          
+          
           <li class="list-group-item d-flex justify-content-between bg-light">
             <div class="text-success">
-              <h6 class="my-0">Promo code</h6>
-              <small>EXAMPLECODE</small>
+              {{!-- <h6 class="my-0">Promo code</h6> --}}
+              <h6 class="my-0 mt-1">
+                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#myModal">
+                Available Coupons
+              </button>
+              </h6>
+              {{!-- <small>EXAMPLECODE</small> --}}
+              {{!-- <small>{{this.Coupon_Code}}</small> --}}
             </div>
-            <span class="text-success">-₹5</span>
+            {{!-- <span class="text-success">{{this.Discount_Amount}}</span> --}}
           </li>
-          <li class="list-group-item d-flex justify-content-between">
-            {{!-- <span>Total (USD)</span> --}}
-            <span>Total </span>
-            <strong>₹{{totalPrice}}</strong>
-          </li>
+          
+          <!-- The Modal -->
+         <div class="modal" id="myModal">
+            <div class="modal-dialog modal-dialog-centered ">
+                <div class="modal-content">
+
+                    <!-- Modal Header -->
+                  <div class="modal-header">
+                      {{!-- <h4 class="modal-title">Select Coupon</h4> --}}
+                      <button type="button" class="btn-close" onclick="myFunction()" data-bs-dismiss="modal">Select Coupon</button>
+                  </div>
+
+                  <!-- Modal body -->
+                  <div class="modal-body">
+                    {{#each coupon}}
+                      <div class="form-check">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioCoupon">
+                        <label class="form-check-label" for="flexRadioDefault1">
+                          {{this.Coupon_Name}}
+                        </label>
+                      </div>
+                    {{/each}}  
+
+                  </div>
+
+                  <!-- Modal footer -->
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Apply Coupon</button>
+                  </div>
+
+
+
+                </div>
+            </div>  
+          </div>
+
+          
+          
+          <div id="price" class="priceClass"> 
+            <li class="list-group-item d-flex justify-content-between">
+              {{!-- <span>Total (USD)</span> --}}
+              <span>Total </span>
+              <strong>₹{{totalPrice}}</strong>
+            </li>
+          </div>
         </ul>
         <!-- Cart -->
 
@@ -165,7 +212,7 @@
             <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
               aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-secondary btn-md waves-effect m-0" type="button">Redeem</button>
+              <button class="btn btn-secondary btn-md waves-effect m-0" onclick="discount('coupon._id')" id="cuponCode" type="button">Redeem</button>
             </div>
           </div>
         </form>

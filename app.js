@@ -16,7 +16,28 @@ const userHelpers = require('./helpers/userHelpers');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 //app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
-app.engine('hbs',hbs.engine({helpers:{increment:function(value,options){return parseInt(value)+1;}},extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/', runtimeOptions: { allowProtoPropertiesByDefault: true, allowProtoMethodsByDefault: true,},})); 
+app.engine('hbs',hbs.engine({helpers:{increment:function(value,options){return parseInt(value)+1;},eqPacked: (status)=>{
+  return status==='packed'? true : false
+},
+eqShipped: (status)=>{
+  return status==='Shipped'? true : false
+}
+,
+eqPlaced: (status)=>{
+  return status==='placed'? true : false
+},
+
+eqDelivered: (status)=>{
+  return status==='Delivered'? true : false
+},
+eqPending: (status)=>{
+  return status==='pending'? true : false
+},
+isoToDate:(date)=>{
+  return date.toDateString()
+},
+multiply:(num1,num2)=>num1*num2,
+Subtraction:(n1,n2)=>n1-n2}, extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/', runtimeOptions: { allowProtoPropertiesByDefault: true, allowProtoMethodsByDefault: true,},})); 
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

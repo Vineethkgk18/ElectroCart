@@ -50,6 +50,7 @@ router.get('/addProduct',adminpController.getAddProduct)
 
 router.post('/adminAddProduct', upload.array('Image',4), adminpController.postAddProduct)
 
+
 //----------Edit Product -------------------------------
 router.get('/editProduct/:id', adminpController.getEditProduct)
 //-------------------EDIT Product ---------------------
@@ -59,19 +60,58 @@ router.post('/adminEditProduct', upload.array('Image',4), adminpController.postE
 //----------delete Product -----------------------------
 router.get('/deleteProduct/:id', adminpController.getDeleteProduct)
 
-router.get('/order',(req,res)=>{
-
-  res.render('adminpages/adminOrderManagement')
-})
-router.get('/coupon',(req,res)=>{
-
-  res.render('adminpages/adminCouponManagement')
+router.get('/order',async(req,res)=>{
+  let order = await adminHelpers.getOrderDetails()
+  //console.log("order:", order)
+  res.render('adminpages/adminOrderManagement',{order})
 })
 
+router.get('/item-packed/:id',(req,res)=>{
+  let orderId= req.params.id;
+  let status = "packed"
+  let orderStatus = adminHelpers.changeOrderStatus(status,orderId)
+  //let order = await adminHelpers.getOrderDetails()
+  res.redirect('/admin/order')
+})
+
+router.get('/item-shipped/:id',(req,res)=>{
+  let orderId= req.params.id;
+  let status = "Shipped"
+  let orderStatus = adminHelpers.changeOrderStatus(status,orderId)
+  res.redirect('/admin/order')
+})
+router.get('/item-delivered/:id',(req,res)=>{
+  let orderId= req.params.id;
+  let status = "Delivered"
+  let orderStatus = adminHelpers.changeOrderStatus(status,orderId)
+  res.redirect('/admin/order')
+})
+
+//############## CouponManagemanet ##################
+
+router.get('/coupon', async(req,res)=>{
+  //let order = await adminHelpers.getOrderDetails()
+  let couponData = await adminHelpers.getCouponCollection()
+  res.render('adminpages/adminCouponManagement',{couponData})
+})
+router.get('/addCoupon',(req,res)=>{
+  
+  res.render("adminpages/adminAddCoupon")
+})
+
+router.post('/adminAddCoupon', async(req,res)=>{
+  let couponData = req.body;
+  // console.log("SSSSSSSSS_req.body:", req.body)
+ // console.log("SSSSSSSSS_req.body:", couponData)
+  let coupon = await adminHelpers.addCoupon(couponData)
+  res.redirect('/admin/coupon')
+})
+router.get("/deleteCoupon/:id",async(req,res)=>{
+ let couponId = req.params.id;
+  await adminHelpers.deleteCoupon(couponId)
+  res.redirect('/admin/coupon')
+})
 module.exports = router;  
-
-
-
 
 
 

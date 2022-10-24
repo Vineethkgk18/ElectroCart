@@ -46,17 +46,13 @@ router.get('/logout', userController.getUserLogOut)
 //##################################################################
 router.get('/profile',verifyLogin,(req,res) =>{
   let user = req.session.user;
-  console.log("user___",user)
   res.render('userpages/userProfile',{users:true,user,orderSuccess:true})
 })
 
+
 router.post('/userProfileAddress',verifyLogin, async(req,res)=>{
-  console.log("user_ profile_address:", req.body)
-  console.log("AAAAAAAAAAAAAAAAAAAAA")
-  console.log("req_body_id",req.session.user._id)
   let userId = req.session.user._id;
   let address = await userHelpers.addUserAddress(userId,req.body)
-
   res.redirect('/profile')
 })
 
@@ -105,6 +101,7 @@ router.get('/viewWishList',verifyLogin, async(req,res)=>{
 router.get('/userCheckOut',verifyLogin, async(req,res) =>{
   let userId = req.session.user._id;
   let user = req.session.user;
+  let coupon = await userHelpers.getCoupon()
   let Products = await userHelpers.getCartProducts(userId)
   let wishListCount = await userHelpers.wishListCount(userId) 
   let totalPrice = await userHelpers.getTotoalPrice(userId)
@@ -115,7 +112,7 @@ router.get('/userCheckOut',verifyLogin, async(req,res) =>{
   console.log("00000000000000000000000000000", Products);
   //console.log("req.session.user._id",req.session.user)
 
-  res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,Products,wProducts,wishListCount,cartCount,addressInfo })
+  res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,Products,wProducts,wishListCount,cartCount,addressInfo,coupon })
 })
 
 router.post('/billingAddress', verifyLogin, async(req,res) =>{
@@ -158,6 +155,7 @@ router.get('/orderSuccess',verifyLogin, async(req,res)=>{
 router.get('/viewOrder',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let order = await userHelpers.getOrder(userId);
+  console.log("78787878787878")
   console.log("ViewOrder", order)
  //console.log("XXXXXXXXXX_Order",order)
   res.render('userpages/viewOrder',{users:true,order})
