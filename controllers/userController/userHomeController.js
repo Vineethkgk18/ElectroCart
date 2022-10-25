@@ -2,7 +2,9 @@ const userHelpers = require('../../helpers/userHelpers')
 const loginHelpers = require('../../helpers/userHelpers/loginHelpers')
 const categoryHelpers = require('../../helpers/userHelpers/categoryHelpers')
 const productHelpers = require('../../helpers/userHelpers/productHelpers')
-const cartHelpers = require('../../helpers/userHelpers/categoryHelpers')
+const cartHelpers = require('../../helpers/userHelpers/cartHelpers')
+const wishListHelpers = require('../../helpers/userHelpers/wishListHelpers')
+const checkOutHelpers = require('../../helpers/userHelpers/checkOutHelpers')
 const twilioHelpers = require('../../helpers/twilioHelpers')
 
 const session = require('express-session');
@@ -12,10 +14,10 @@ module.exports={
         let userId=req.session.user._id
         let user = req.session.user;
         //console.log("ZZZZZZZZZZZZZZ_session", req.session);
-        let cartCount = await userHelpers.getCartCount(userId)
+        let cartCount = await cartHelpers.getCartCount(userId)
         let products = await productHelpers.getProducts();
         let category = await categoryHelpers.getCategory();
-        let wishListCount = await userHelpers.wishListCount(userId)
+        let wishListCount = await wishListHelpers.wishListCount(userId)
        // console.log("AAAAAAAAAA____cartCount",cartCount)        
             res.render('userpages/userHome',{users:true,orderSuccess:true,user,products,category,cartCount,wishListCount})
     },

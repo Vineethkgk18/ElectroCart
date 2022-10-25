@@ -6,6 +6,9 @@ const session = require('express-session');
 const userController = require ('../controllers/userController/userHomeController')
 const prodController =require ('../controllers/userController/userProductController')
 const cartController =require ('../controllers/userController/userCartController');
+const cartHelpers = require('../helpers/userHelpers/cartHelpers')
+const wishListHelpers = require('../helpers/userHelpers/wishListHelpers')
+const checkOutHelpers = require('../helpers/userHelpers/checkOutHelpers')
 const { get } = require('../config/connection');
 const { Db, ObjectId } = require('mongodb-legacy');
 const { json } = require('express');
@@ -44,6 +47,7 @@ router.post('/otp', userController.postSignUpOtp)
 router.get('/logout', userController.getUserLogOut)
 
 //##################################################################
+
 router.get('/profile',verifyLogin,(req,res) =>{
   let user = req.session.user;
   res.render('userpages/userProfile',{users:true,user,orderSuccess:true})
@@ -78,13 +82,11 @@ router.get('/placeOrder',verifyLogin, async(req,res)=>{
 })
 
 
-
-
 router.get('/addToWishList/:id',verifyLogin, async(req,res)=>{
   console.log("add to wishlist")
   let proId = req.params.id;
   let userId = req.session.user._id;
-  let userWishList =  await userHelpers.addToWishlist(proId,userId)
+  let userWishList =  await wishListHelpers.addToWishlist(proId,userId)
   console.log("added to wishlist")
       res.json({status:true})
 })
@@ -92,8 +94,8 @@ router.get('/addToWishList/:id',verifyLogin, async(req,res)=>{
 router.get('/viewWishList',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let user = req.session.user;
-  let wProducts = await userHelpers.getWishListProducts(userId)
-  let cartCount = await userHelpers.getCartCount(userId)
+  let wProducts = await wishListHelpers.getWishListProducts(userId)
+  let cartCount = await cartHelpers.getCartCount(userId)
   console.log("PPPPPPPP",wProducts)
   res.render('userpages/userWishlist',{wProducts,cartCount,users:true,orderSuccess:true,user})
 })
@@ -102,11 +104,11 @@ router.get('/userCheckOut',verifyLogin, async(req,res) =>{
   let userId = req.session.user._id;
   let user = req.session.user;
   let coupon = await userHelpers.getCoupon()
-  let Products = await userHelpers.getCartProducts(userId)
-  let wishListCount = await userHelpers.wishListCount(userId) 
-  let totalPrice = await userHelpers.getTotoalPrice(userId)
-  let wProducts = await userHelpers.getWishListProducts(userId)
-  let cartCount = await userHelpers.getCartCount(userId)  
+  let Products = await cartHelpers.getCartProducts(userId)
+  let wishListCount = await wishListHelpers.wishListCount(userId) 
+  let totalPrice = await cartHelpers.getTotoalPrice(userId)
+  let wProducts = await wishListHelpers.getWishListProducts(userId)
+  let cartCount = await cartHelpers.getCartCount(userId)  
 
   let addressInfo = req.session.user;
   console.log("00000000000000000000000000000", Products);
@@ -118,7 +120,7 @@ router.get('/userCheckOut',verifyLogin, async(req,res) =>{
 router.post('/billingAddress', verifyLogin, async(req,res) =>{
   let userId = req.session.user._id;
   let add = req.body.address
-  let Products = await userHelpers.getCartProducts(userId)
+  let Products = await cartHelpers.getCartProducts(userId)
   let address = await userHelpers.getAddressById(add,userId)
    res.json({address})
    //console.log("XXXXXXXXXXXXXXXXXX",address)
@@ -126,8 +128,8 @@ router.post('/billingAddress', verifyLogin, async(req,res) =>{
 router.post('/confirmOrder',verifyLogin, async(req,res)=>{
   //console.log("XXXXXXXreq.body", req.body)
   let userId = req.session.user._id;
-  let totalPrice = await userHelpers.getTotoalPrice(userId)
-  let cartProducts = await userHelpers.getCartProducts(userId)
+  let totalPrice = await cartHelpers.getTotoalPrice(userId)
+  let cartProducts = await cartHelpers.getCartProducts(userId)
   userHelpers.placeOrder(req.body,userId,totalPrice,cartProducts).then((orderId)=>{
     
       //console.log("req.body.paymentMethod:", req.body.paymentMethod);
@@ -180,8 +182,20 @@ router.post('/verifyPayment',verifyLogin, (req,res)=>{
   }).catch((err)=>{
     console.log(err)
     res.json({status:false,errMsg:''})
-
   })
+})
+
+router.post('/applyCoupon',verifyLogin, (req,res)=>{
+  let userId = req.session.user._id;
+  let couponDetails= req.body;
+  console.log("couponName:",couponDetails.couponName );
+  console.log("DiscountAmount:",couponDetails.DiscountAmount );
+  console.log("couponId:",couponDetails.couponId );
+  
+
+  let discountedPrice=couponDetails.totalPrice -couponDetails.DiscountAmount;
+
+  //let coupon = 
 
 
 })

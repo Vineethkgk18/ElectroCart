@@ -2,8 +2,7 @@
 //const YOUR_KEY_ID=process.env.RAZOR_KEY_ID
 
   function billingAddress(addId) {
-    //console.log(addId);
-    //console.log("AAAAAAAAABBBBBBBXBBBBBXXXX")
+    
     $.ajax({
       url:'/billingAddress',
       data:{
@@ -11,18 +10,16 @@
     },
       method: 'post',
       success: (res) => {
-        //console.log("WWWWWWWWWWWWWWWW")
-       //console.log("this is from response", res);
-        //alert('success')
+        /*  response object return the date from the backend and here the 
+            data recieved in res is send to the fronded using dom  
+        
+        */
           document.getElementById("Name").value = res.address.Name;
           document.getElementById("email").value = res.address.Email;
           document.getElementById("phoneNumber").value = res.address.mobile;
           document.getElementById("address").value = res.address.Address;
         // // document.getElementById("lastName").value = res.address.lastName;
           document.getElementById("pincode").value = res.address.Pincode;
-        // document.getElementById("city").value = res.address.city;
-        // document.getElementById("landmark").value = res.address.landmark;
-        // document.getElementById("state").value = res.address.state;
       },
       error: (error) => {
         alert('Error')
@@ -31,18 +28,30 @@
     })
   }
 
-  function discount(couponId){
-   // alert('hi',couponId)
-    console.log("Australia")
-    console.log(couponId)
-  }
-
-  function myFunction() {
-    alert("hello")
-    var x = document.getElementById("flexRadioCoupon").value;
-    alert("hello")
-    console.log("hello")
-    //document.getElementById("demo").innerHTML = x;
+  
+  
+  function applyCoupon(couponId,couponName,DiscountAmount,totalPrice) {
+    /*
+  this function get the applied coupon details, couponId
+  couponName and DiscountAmount and send it to beckend via 
+  url: ''/applyCoupon'
+  
+  */ 
+    alert(couponId)
+    document.getElementById('placeId').value = couponName;
+    $.ajax({
+          url:'/applyCoupon',
+          data:{
+            couponId:couponId,
+            couponName:couponName,
+            DiscountAmount:DiscountAmount,
+            totalPrice:totalPrice
+          },
+          method:'post',
+          success:(res)=>{
+            alert("America Success");
+          }
+    })
   }
 
   function confirmOrderButton(){

@@ -125,11 +125,11 @@ updateProducts:(product_info)=>{
         db.get().collection(collection.PRODUCT_COLLECTION)
         .updateOne({_id:objectId(product_info.id)},{
             $set:{
-                Product_Name : product_info.Product_Name,
-                Product_ID : product_info.Product_ID,
-                Product_Details : product_info.Product_Details,
+                ProductName : product_info.ProductName,
+                ProductID : product_info.ProductID,
+                ProductDetails : product_info.ProductDetails,
                 Price : product_info.Price,
-                Category_ID : product_info.Category_ID,
+                CategoryID : product_info.CategoryID,
                 Images : product_info.Images  
             }
         }).then((response) =>{

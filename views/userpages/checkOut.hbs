@@ -7,9 +7,7 @@
             {{!-- cards to select address --}}
             <h2 class="pb-3"> Select Address</h2>
             <div class="row">
-             
                 {{#each user.Address}}
-               
                     <div class="card pl-3 pt-1 pb-1 m-1" style="width: 18rem;">
                     <div class="card-body">
                     <div class="form-check">
@@ -27,13 +25,11 @@
                 </div>
                 {{/each}}
 <!------    -------------->
-
     </div>
     <a href="/addAddress" class="btn btn-outline-success mt-4 mr-2">Add New Address</a>
     <a href="/userDetails" class="btn btn-outline-success mt-4">Manage Addresses</a>
     <!--Grid row-->
     <div class="row pt-5">
-
       <!--Grid column-->
       <div class="col-md-6 mb-4">
         <h2 class="pb-4">Billing Address</h2>
@@ -119,7 +115,7 @@
           {{#each Products}}
           <li class="list-group-item d-flex justify-content-between lh-condensed">
             <div>
-              <h6 class="my-0">{{this.product.Product_Name}}</h6>
+              <h6 class="my-0">{{this.product.ProductName}}</h6>
               <small class="text-muted">X{{this.quantity}}</small>
             </div>
             <span class="text-muted" {{this.productId._id}}price>₹{{this.product.Price}}</span>
@@ -154,9 +150,8 @@
               </button>
               </h6>
               {{!-- <small>EXAMPLECODE</small> --}}
-              {{!-- <small>{{this.Coupon_Code}}</small> --}}
             </div>
-            {{!-- <span class="text-success">{{this.Discount_Amount}}</span> --}}
+            {{!-- <span class="text-success">{{this.DiscountAmount}}</span> --}}
           </li>
           
           <!-- The Modal -->
@@ -167,16 +162,16 @@
                     <!-- Modal Header -->
                   <div class="modal-header">
                       {{!-- <h4 class="modal-title">Select Coupon</h4> --}}
-                      <button type="button" class="btn-close" onclick="myFunction()" data-bs-dismiss="modal">Select Coupon</button>
+                      <button type="button" class="btn-close" data-bs-dismiss="modal">Select Coupon</button>
                   </div>
 
                   <!-- Modal body -->
                   <div class="modal-body">
                     {{#each coupon}}
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioCoupon">
-                        <label class="form-check-label" for="flexRadioDefault1">
-                          {{this.Coupon_Name}}
+                        <input class="form-check-input" type="radio" onclick="applyCoupon('{{this._id}}','{{this.CouponName}}','{{this.Coupon.DiscountAmount}},{{totalPrice}}')" name="flexRadioDefault" id="flexRadioDefault">
+                        <label class="form-check-label" id="couponName" for="flexRadioDefault">
+                          {{this.CouponName}}
                         </label>
                       </div>
                     {{/each}}  
@@ -185,7 +180,7 @@
 
                   <!-- Modal footer -->
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" data-dismiss="modal">Apply Coupon</button>
+                    <button type="button" class="btn btn-danger"  onclick="myFunction()" data-dismiss="modal">Apply Coupon</button>
                   </div>
 
 
@@ -209,7 +204,7 @@
         <!-- Promo code -->
         <form class="card p-2">
           <div class="input-group">
-            <input type="text" class="form-control" placeholder="Promo code" aria-label="Recipient's username"
+            <input type="text" class="form-control" id="placeId" placeholder="Promo code" aria-label="Recipient's username"
               aria-describedby="basic-addon2">
             <div class="input-group-append">
               <button class="btn btn-secondary btn-md waves-effect m-0" onclick="discount('coupon._id')" id="cuponCode" type="button">Redeem</button>
