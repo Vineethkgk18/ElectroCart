@@ -52,10 +52,11 @@ router.post('/adminAddProduct', upload.array('Image',4), adminpController.postAd
 
 
 //----------Edit Product -------------------------------
+//router.get('/editProduct/:id', adminpController.getEditProduct)
 router.get('/editProduct/:id', adminpController.getEditProduct)
 //-------------------EDIT Product ---------------------
-router.post('/adminEditProduct', upload.array('Image',4), adminpController.postEditProduct)
-
+//router.post('/adminEditProduct', upload.array('Image',4), adminpController.postEditProduct)
+router.put('/adminEditProduct', upload.array('Image',4), adminpController.postEditProduct)
 
 //----------delete Product -----------------------------
 router.get('/deleteProduct/:id', adminpController.getDeleteProduct)

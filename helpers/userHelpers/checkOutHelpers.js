@@ -18,6 +18,17 @@ var instance = new Razorpay({
   });
   module.exports={
 
+    checkCouponValidity:(couponId)=>{
+      // if(db.get().collection(collection.COUPON_COLLECTION).updateOne()
+           return new Promise( async (resolve, reject) =>{
+            try{
+              let couponDetails = await db.get().collection(collection.COUPON_COLLECTION).findOne({_id:objectId(couponId)})
+              console.log("couponDetails:",couponDetails)
+
+            }catch{}
+
+          })
+   }
 
 
     

@@ -197,11 +197,8 @@ getCoupon:()=>{
             resolve(response)
         })
     })
-},
-getCouponUsage:()=>{
-   // if(db.get().collection(collection.COUPON_COLLECTION).updateOne()
-        
 }
+
 
 }
 

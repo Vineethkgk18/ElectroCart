@@ -185,13 +185,14 @@ router.post('/verifyPayment',verifyLogin, (req,res)=>{
   })
 })
 
-router.post('/applyCoupon',verifyLogin, (req,res)=>{
+router.post('/applyCoupon',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let couponDetails= req.body;
   console.log("couponName:",couponDetails.couponName );
   console.log("DiscountAmount:",couponDetails.DiscountAmount );
   console.log("couponId:",couponDetails.couponId );
   
+  let couponUsage = await checkOutHelpers.checkCouponValidity(couponDetails.couponId)
 
   let discountedPrice=couponDetails.totalPrice -couponDetails.DiscountAmount;
 
