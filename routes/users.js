@@ -192,7 +192,7 @@ router.post('/applyCoupon',verifyLogin, async(req,res)=>{
   console.log("DiscountAmount:",couponDetails.DiscountAmount );
   console.log("couponId:",couponDetails.couponId );
   
-  let couponUsage = await checkOutHelpers.checkCouponValidity(couponDetails.couponId)
+  let couponUsage = await checkOutHelpers.checkCouponValidity(couponDetails.couponId,userId)
 
   let discountedPrice=couponDetails.totalPrice -couponDetails.DiscountAmount;
 

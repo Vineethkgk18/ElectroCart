@@ -18,15 +18,46 @@ var instance = new Razorpay({
   });
   module.exports={
 
-    checkCouponValidity:(couponId)=>{
+    checkCouponValidity:(couponId,userId)=>{
       // if(db.get().collection(collection.COUPON_COLLECTION).updateOne()
            return new Promise( async (resolve, reject) =>{
             try{
               let couponDetails = await db.get().collection(collection.COUPON_COLLECTION).findOne({_id:objectId(couponId)})
               console.log("couponDetails:",couponDetails)
+              
+              if(couponDetails){
 
-            }catch{}
+                let date = new Date();
+                console.log("date:",date)
+                let expiryDate = new Date(couponDetails.ExpiryDate)
+                //let str = date.toJSON().slice(0, 10);
+                console.log(expiryDate, 'expiryDate');
+                //console.log(str, 'dateeeeee');
+                if(date>expiryDate){
+                  resolve({expiry:true})
+                }else{
 
+                  let user = await db.get().collection(collection.COUPON_COLLECTION)
+                  .findOne({_id:objectId(couponId), users:{ $in: [objectId(userId)]}});
+                  console.log(" check user in coupon used field ")
+
+                  if(user){
+                    console.log(" user used coupon ")
+                    resolve({couponUsed:true})
+                  }else{
+                    resolve(couponDetails)
+                  }
+                }
+              }else{
+                console.log("Coupon doesn't exist ");
+                resolve({unavailable: true})
+              }
+
+
+            }catch{
+              console.log(error)
+              reject(error)
+            }
           })
    }
 
