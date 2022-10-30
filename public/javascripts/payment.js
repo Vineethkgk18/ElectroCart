@@ -28,8 +28,7 @@
     })
   }
 
-  
-  
+
   function applyCoupon(couponId,couponName,DiscountAmount,totalPrice) {
     /*
   this function get the applied coupon details, couponId
@@ -37,31 +36,75 @@
   url: ''/applyCoupon'
   
   */ 
-    alert(couponId)
+ console.log("ZZZZZZZZZZZZZZZZZZz ")
+ //console.log("totalPrice:",totalPrice)
+    // alert(couponId)
+    //console.log
+    //alert(totalPrice)
     document.getElementById('placeId').value = couponName;
+    document.getElementById('discount').innerHTML = DiscountAmount;
     $.ajax({
           url:'/applyCoupon',
           data:{
             couponId:couponId,
             couponName:couponName,
-            DiscountAmount:DiscountAmount,
             totalPrice:totalPrice
           },
           method:'post',
-          success:(res)=>{
-            alert("America Success");
+          success:(response)=>{
+            console.log("totalPrice:",response.couponData.totalPrice)
+              if(response.couponData.expiry)
+              {
+                console.log("coupon has expired")
+                alert('coupon has expired')
+                document.getElementById('discount').innerHTML = 0;
+
+              }else if(response.couponData.couponUsed){
+                alert('this coupon is already used')
+                document.getElementById('discount').innerHTML = 0;
+              }else if(response.couponData.unavailable)
+              {
+                alert('this coupon is not available')
+                document.getElementById('discount').innerHTML = 0;
+              }else
+              {
+                  console.log("response:", response)
+                 document.getElementById('discount').innerHTML = DiscountAmount;
+                 document.getElementById('discount').innerHTML = response.couponData.totalPrice-DiscountAmount;
+
+              }
+            //alert("America Success");
           }
     })
   }
 
+//  function redeem(totalPrice){
+//     $.ajax({
+//       url:'/redeemCoupon',
+//       data:{
+//         totalPrice: totalPrice
+//       },
+//       method:'post',
+//       success:(res)=>{
+//         alert("coupon applied")
+//       }
+//     })
+//  }
+
+
   function confirmOrderButton(){
     ///e.preventDefault()
+    /*
+    
+    *
+     */
     Name = document.getElementById("Name").value
     mobile = document.getElementById("phoneNumber").value
     Email = document.getElementById("email").value
     Address = document.getElementById("address").value
     Pincode = document.getElementById("pincode").value
     paymentMethod = document.querySelector('input[name="paymentMethod"]:checked').value;
+    amount = document.getElementById("grantTotal").value  
     // lastName = document.getElementById("lastName").value
 
     $.ajax({
@@ -76,17 +119,14 @@
       },
       method:'post',
       success:(response)=>{
-        //console.log("ZZZZZZZZZZZZZZZZZZZZZZ")
-        //console.log("response-----:",response)
-        //console.log("Order Successful: ",response);
-        
         if(response.codSuccess){
-          //console.log("----xxx----response",response)
           alert("Order Successful")
           location.href='/orderSuccess'
         }
         else{
           console.log("hay i am here")
+          console.log("XXXX__amount",amount)
+          response.amount= amount; 
            razorpayPayment(response)
         }
       }
@@ -144,23 +184,8 @@ function verifyPayment(payment,order){
         alert("Payment failed")
       }
     }
-
-
-
   })
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

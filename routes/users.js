@@ -6,9 +6,15 @@ const session = require('express-session');
 const userController = require ('../controllers/userController/userHomeController')
 const prodController =require ('../controllers/userController/userProductController')
 const cartController =require ('../controllers/userController/userCartController');
+const wishListController = require ('../controllers/userController/wishListController');
+
 const cartHelpers = require('../helpers/userHelpers/cartHelpers')
+
+
 const wishListHelpers = require('../helpers/userHelpers/wishListHelpers')
 const checkOutHelpers = require('../helpers/userHelpers/checkOutHelpers')
+
+
 const { get } = require('../config/connection');
 const { Db, ObjectId } = require('mongodb-legacy');
 const { json } = require('express');
@@ -109,12 +115,13 @@ router.get('/userCheckOut',verifyLogin, async(req,res) =>{
   let totalPrice = await cartHelpers.getTotoalPrice(userId)
   let wProducts = await wishListHelpers.getWishListProducts(userId)
   let cartCount = await cartHelpers.getCartCount(userId)  
-
+  
   let addressInfo = req.session.user;
   console.log("00000000000000000000000000000", Products);
   //console.log("req.session.user._id",req.session.user)
-
-  res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,Products,wProducts,wishListCount,cartCount,addressInfo,coupon })
+  let grantTotal = totalPrice;
+  let discountAmount=0;
+  res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,discountAmount,grantTotal,Products,wProducts,wishListCount,cartCount,addressInfo,coupon })
 })
 
 router.post('/billingAddress', verifyLogin, async(req,res) =>{
@@ -125,13 +132,13 @@ router.post('/billingAddress', verifyLogin, async(req,res) =>{
    res.json({address})
    //console.log("XXXXXXXXXXXXXXXXXX",address)
 })
+
 router.post('/confirmOrder',verifyLogin, async(req,res)=>{
   //console.log("XXXXXXXreq.body", req.body)
   let userId = req.session.user._id;
   let totalPrice = await cartHelpers.getTotoalPrice(userId)
   let cartProducts = await cartHelpers.getCartProducts(userId)
   userHelpers.placeOrder(req.body,userId,totalPrice,cartProducts).then((orderId)=>{
-    
       //console.log("req.body.paymentMethod:", req.body.paymentMethod);
       //  console.log("orderId:",objectId(orderId))
       //  console.log("XXXXXXXXXXXXXXXXXXXXXXXXX");
@@ -188,18 +195,29 @@ router.post('/verifyPayment',verifyLogin, (req,res)=>{
 router.post('/applyCoupon',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let couponDetails= req.body;
-  console.log("couponName:",couponDetails.couponName );
-  console.log("DiscountAmount:",couponDetails.DiscountAmount );
-  console.log("couponId:",couponDetails.couponId );
+   
+  let totalPrice = await cartHelpers.getTotoalPrice(userId)
+  let couponData = await checkOutHelpers.checkCouponValidity(couponDetails.couponId,userId)
+
+  //console.log("couponUsage:",couponData)
+   req.session.couponData = couponData; 
+   req.session.totalAmount = req.body.totalPrice;
+    couponData.totalPrice=totalPrice
+   console.log( "fxXFXXFXFX_couponData:",couponData)
+
+  /**
+   * 
+   * couponData contains all the value related to the validity of the 
+   * coupon 
+   * if coupon is expired it shows expiry:true
+   * if coupon is valied it returns the coupon data
+   * 
+   */
+  res.json({couponData})
+
   
-  let couponUsage = await checkOutHelpers.checkCouponValidity(couponDetails.couponId,userId)
-
-  let discountedPrice=couponDetails.totalPrice -couponDetails.DiscountAmount;
-
-  //let coupon = 
-
-
 })
+
 module.exports = router;
 
 

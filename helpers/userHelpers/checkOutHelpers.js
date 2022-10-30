@@ -26,7 +26,6 @@ var instance = new Razorpay({
               console.log("couponDetails:",couponDetails)
               
               if(couponDetails){
-
                 let date = new Date();
                 console.log("date:",date)
                 let expiryDate = new Date(couponDetails.ExpiryDate)

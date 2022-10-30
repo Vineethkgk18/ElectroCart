@@ -162,25 +162,23 @@
                     <!-- Modal Header -->
                   <div class="modal-header">
                       {{!-- <h4 class="modal-title">Select Coupon</h4> --}}
-                      <button type="button" class="btn-close" data-bs-dismiss="modal">Select Coupon</button>
+                      <button type="button" class="btn-close" data-dismiss="modal">Select Coupon</button>
                   </div>
 
                   <!-- Modal body -->
                   <div class="modal-body">
                     {{#each coupon}}
                       <div class="form-check">
-                        <input class="form-check-input" type="radio" onclick="applyCoupon('{{this._id}}','{{this.CouponName}}','{{this.Coupon.DiscountAmount}},{{totalPrice}}')" name="flexRadioDefault" id="flexRadioDefault">
+                        <input class="form-check-input" type="radio" onclick="applyCoupon('{{this._id}}','{{this.CouponName}}','{{this.DiscountAmount}}')" name="flexRadioDefault" id="flexRadioDefault">
                         <label class="form-check-label" id="couponName" for="flexRadioDefault">
                           {{this.CouponName}}
                         </label>
                       </div>
                     {{/each}}  
-
                   </div>
-
                   <!-- Modal footer -->
                   <div class="modal-footer">
-                    <button type="button" class="btn btn-danger"  onclick="myFunction()" data-dismiss="modal">Apply Coupon</button>
+                    <button type="button" class="btn btn-danger"  data-dismiss="modal">Apply Coupon</button>
                   </div>
 
 
@@ -189,7 +187,15 @@
             </div>  
           </div>
 
-          
+          <form class="card p-2">
+          <div class="input-group">
+            <input type="text" class="form-control" id="placeId" style=" colour:blue; " placeholder="Promo code" aria-label="Recipient's username"
+              aria-describedby="basic-addon2">
+            {{!-- <div class="input-group-append">
+              <button class="btn btn-secondary btn-md waves-effect m-0" onclick="redeem('{{totalPrice}}')" id="cuponCode" type="button">Redeem</button>
+            </div> --}}
+          </div>
+        </form>
           
           <div id="price" class="priceClass"> 
             <li class="list-group-item d-flex justify-content-between">
@@ -198,19 +204,33 @@
               <strong>₹{{totalPrice}}</strong>
             </li>
           </div>
+          <div id="price" class="priceClass"> 
+            <li class="list-group-item d-flex justify-content-between">
+              {{!-- <span>Total (USD)</span> --}}
+              <span >Discount </span>
+              <strong id="discount" >₹{{discountAmount}}</strong>
+            </li>
+          </div>
+          <div  class="priceClass"> 
+            <li class="list-group-item d-flex justify-content-between">
+              {{!-- <span>Total (USD)</span> --}}
+              <span>Grand Total </span>
+              <strong id="grantTotal" >₹{{grantTotal}}</strong>
+            </li>
+          </div>
         </ul>
         <!-- Cart -->
 
         <!-- Promo code -->
-        <form class="card p-2">
+        {{!-- <form class="card p-2">
           <div class="input-group">
             <input type="text" class="form-control" id="placeId" placeholder="Promo code" aria-label="Recipient's username"
               aria-describedby="basic-addon2">
             <div class="input-group-append">
-              <button class="btn btn-secondary btn-md waves-effect m-0" onclick="discount('coupon._id')" id="cuponCode" type="button">Redeem</button>
+              <button class="btn btn-secondary btn-md waves-effect m-0" onclick="redeem('{{totalPrice}}')" id="cuponCode" type="button">Redeem</button>
             </div>
           </div>
-        </form>
+        </form> --}}
         <!-- Promo code -->
 
 
