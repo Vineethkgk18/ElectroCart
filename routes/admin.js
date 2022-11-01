@@ -6,6 +6,8 @@ const adminhController = require('../controllers/adminController/adminHomeContro
 const adminuController = require('../controllers/adminController/adminUserController')
 const admincController = require('../controllers/adminController/adminCategoryController')
 const adminpController = require('../controllers/adminController/adminProductController')
+const adminBannerController = require('../controllers/adminController/adminBannerController')
+
 const multer = require('multer')
 //const upload = multer({ dest:'./public/Admin/uploadedImage'})  // --------------multer 
 
@@ -27,6 +29,8 @@ router.get('/adminLogin', adminhController.getAdminLogin)
 
 router.post('/adminLogin', adminhController.postAdminLogin)
 
+router.get ('/adminSignUp',adminhController.getAdminSignUp)
+router.post('/SignUp', adminhController.postAdminSignUp)
 //----------User Management -----------------------
 router.get('/viewUser', adminuController.getViewUser)
 // --------------block user ---------------------
@@ -60,6 +64,16 @@ router.put('/adminEditProduct', upload.array('Image',4), adminpController.postEd
 
 //----------delete Product -----------------------------
 router.get('/deleteProduct/:id', adminpController.getDeleteProduct)
+
+router.get('/banner',adminBannerController.getBannerManage)
+
+router.get('/addBanner', adminBannerController.getAddBanner)
+// router.get('/banner',async(req,res)=>{
+  
+//   res.render('adminpages/adminBannerManagement')
+  
+// })
+
 
 router.get('/order',async(req,res)=>{
   let order = await adminHelpers.getOrderDetails()
@@ -112,7 +126,10 @@ router.get("/deleteCoupon/:id",async(req,res)=>{
   await adminHelpers.deleteCoupon(couponId)
   res.redirect('/admin/coupon')
 })
+
+
 module.exports = router;  
+
 
 
 

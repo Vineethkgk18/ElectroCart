@@ -26,8 +26,17 @@
                 {{/each}}
 <!------    -------------->
     </div>
-    <a href="/addAddress" class="btn btn-outline-success mt-4 mr-2">Add New Address</a>
-    <a href="/userDetails" class="btn btn-outline-success mt-4">Manage Addresses</a>
+    {{!-- <button type="button" class="btn btn-outline-success btn-link btn-block mt-3" data-toggle="modal" data-target="#staticBackdrop1">
+                              Add Address
+                          </button> --}}
+
+    {{!-- <a href="/addAddress" class="btn btn-outline-success mt-4 mr-2">Add New Address</a> --}}
+     <a > 
+        <button type="button" class="btn btn-outline-success mt-4 mr-2" data-toggle="modal" data-target="#staticBackdrop1" >
+            Add New Address 
+        </button>
+     </a>
+    {{!-- <a href="/userDetails" class="btn btn-outline-success mt-4">Manage Addresses</a> --}}
     <!--Grid row-->
     <div class="row pt-5">
       <!--Grid column-->
@@ -256,6 +265,40 @@
       </div>
       <!--Grid column-->
       </form>
+
+      <!-- Modal -->
+<div class="modal fade" id="staticBackdrop1" tabindex="-1" aria-labelledby="exampleModalLabel1" aria-hidden="true">
+    <div class="modal-dialog d-flex justify-content-center">
+        <div class="modal-content w-70">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel1">Add Address</h5>
+                <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                
+            </div>
+            <div class="modal-body p-3">
+                <form action="" id="form"  method="post" enctype="multipart/form-data">
+                    <!-- Email input -->
+                    {{!-- <form action="/userProfileAddress" method="post"></form> --}}
+                    <div class="row mt-3">
+                        <div class="col-md-12"><label class="labels">Name</label><input type="text" name="Name"
+                                class="form-control" placeholder="Enter Name" value="" required></div>
+                        <div class="col-md-12"><label class="labels">Email</label><input type="text" name="Email"
+                                class="form-control" placeholder="Enter Email" value="" required></div>
+                        <div class="col-md-12"><label class="labels">Mobile</label><input type="number" name="mobile"
+                                class="form-control" placeholder="Enter Mobile" value="" required></div>
+                        <div class="col-md-12"><label class="labels">Address</label><input type="text"
+                                name="Address" class="form-control" placeholder="Enter Address" value="" required></div>
+                        <div class="col-md-12"><label class="labels">Pincode</label><input type="text" name="Pincode"
+                                class="form-control" placeholder="enter Pincode" value="" required></div>
+                    </div>
+
+                    <!-- Submit button -->
+                    <button type="submit" onclick="addAddress()" class="btn btn-primary btn-block">save Address</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
     </div>
     <!--Address div-->
 

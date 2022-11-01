@@ -2,6 +2,7 @@ var db= require('../config/connection')
 var collection=require('../config/collections')
 const bcrypt = require('bcrypt')
 const { response } = require('express')
+const { get } = require('../app')
 var objectId=require('mongodb').ObjectId
 
 module.exports={
@@ -27,6 +28,24 @@ module.exports={
                 })
             }
         })
+    },
+    verifyEmail:(adminEmail)=>{
+        return new Promise ((resolve,reject) =>{
+            db.get().collection(collection.USER_COLLECTION).find({Email:adminEmail}).count().then((response) =>{
+              //  console.log("Email_count:", response)    
+                resolve(response)
+            })           
+        })
+    },
+    doSignup:(adminData)=>{       
+        return new Promise(async(resolve,reject)=>{
+            
+           userData.Password=await bcrypt.hash(adminData.Password,10)
+           db.get().collection(collection.ADMIN_COLLECTION).insertOne(adminData).then((Data)=>{
+            resolve(Data.insertedId)
+                
+        })
+      })
     },
     //---------------------------------UserManagement ---------------------------------------
     getAllUsers:() => {
@@ -181,6 +200,24 @@ deleteCoupon:(couponId)=>{
         })
     })
 
+},
+getUsersCount:()=>{
+    return new Promise( async (resolve,reject)=>{
+       let userCount = await db.get().collection(collection.USER_COLLECTION).find().count()
+       resolve(userCount)
+    })
+},
+getOrdersCount:()=>{
+    return new Promise( async (resolve,reject)=>{
+       let orderCount = await db.get().collection(collection.ORDER_COLLECTION).find().count()
+       resolve(orderCount)
+    })
+},
+getNumberOfOrderDelivered:()=>{ 
+    return new Promise( async (resolve,reject)=>{
+        let deliveredCount = await db.get().collection(collection.ORDER_COLLECTION).find({status:"Delivered"}).count()
+        resolve(deliveredCount)
+    })
 }
 
     

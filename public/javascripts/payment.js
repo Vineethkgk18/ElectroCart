@@ -28,6 +28,33 @@
     })
   }
 
+  function addAddress(){
+    //alert(" success")
+    const form = document.querySelector('form')
+    alert( new FormData())
+    const formData = new FormData(form);
+    //console.log(form)
+    console.log(formData)
+    console.log("SSSSSSSSSSSS")
+    $.ajax({ url:'/addAddress',
+    method:'post',
+    data:{
+      form
+    },
+      success:(res)=>{
+          alert("success");
+          console.log("success");
+      }
+    })
+
+  }
+  // function addAddres(){
+  //   console.log("SSSSSSSSSSSS")
+  //   const formData = new FormData();
+
+    
+  // }
+  
 
   function applyCoupon(couponId,couponName,DiscountAmount,totalPrice) {
     /*

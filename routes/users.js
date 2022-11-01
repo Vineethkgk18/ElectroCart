@@ -65,7 +65,11 @@ router.post('/userProfileAddress',verifyLogin, async(req,res)=>{
   let address = await userHelpers.addUserAddress(userId,req.body)
   res.redirect('/profile')
 })
+router.post('/addAddress',(req,res)=>{
 
+  console.log("XXXXXX_req.body", req.body);
+  
+})
 
 
  //router.get('/allProducts, prodController.allProductView')
