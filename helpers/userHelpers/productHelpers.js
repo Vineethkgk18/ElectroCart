@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../../config/collections');
 const { DeploymentList } = require('twilio/lib/rest/preview/deployed_devices/fleet/deployment');
 const { response } = require('express');
-const Razorpay = require('razorpay')
+const Razorpay = require('razorpay');
+const { NetworkContext } = require('twilio/lib/rest/supersim/v1/network');
 require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID
 const authToken=process.env.TWILIO_AUTH_TOKEN
@@ -21,23 +22,43 @@ var instance = new Razorpay({
 
     getProducts:()=>{
         return new Promise ( (resolve,reject) =>{
-            db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((products)=>{
-                resolve(products)
-            })
+
+            try {
+                db.get().collection(collection.PRODUCT_COLLECTION).find().toArray().then((products)=>{
+                    resolve(products)
+                })
+            } catch (error) {
+               next(error)
+            }
         })
     },
     getFilterProduct:(cateID) =>{       
-        return new Promise ( (resolve, reject) =>{            
-            db.get().collection(collection.PRODUCT_COLLECTION).find({CategoryID:cateID}).toArray().then((response)=>{
-                resolve(response)
-            })       
+        return new Promise ( (resolve, reject) =>{
+
+                try {
+                    //db.get().collection(collection.PRODUCT_COLLECTION).find({CategoryID:cateID}).toArray().then((response)=>{
+                    db.get().collection(collection.PRODUCT_COLLECTION).find({_id:objectId(cateID)}).toArray().then((response)=>{
+                        console.log("getFilterProduct:",response)
+                        resolve(response)
+                    }) 
+                } catch (error) {
+                    next(error)
+                }   
+
         })
     },
+
     getProductById:(productId) => {
         return new Promise ( (resolve, reject) => {
-            db.get().collection(collection.PRODUCT_COLLECTION).find({_id:objectId(productId)}).toArray().then((response)=>{
-                resolve(response)
-            })
+
+                try {
+                    db.get().collection(collection.PRODUCT_COLLECTION).find({_id:objectId(productId)}).toArray().then((response)=>{
+                        resolve(response)
+                    })
+                } catch (error) {
+                    next(error)
+                }
+                
         })
 }
 

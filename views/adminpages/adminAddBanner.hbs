@@ -54,7 +54,8 @@
                             </a>
                          <h3>Add Banner</h3>
                         </div>
-                    <form action="/admin/adminAddProduct" method="POST" enctype="multipart/form-data" >
+                        {{!-- <form action="/admin/adminAddBanner" method="POST" enctype="multipart/form-data" ></form> --}}
+                    <form action="/admin/adminAddBanner" method="POST" >
                         <div class="form-floating mb-3">
                             <input type="text" name= "BannerName" class="form-control" id="floatingText" placeholder="jhondoe">
                             <label for="floatingText">Banner Name</label>
@@ -65,11 +66,13 @@
                         </div>
                         
                         {{!-- image input form  --}}
+
                         <div class="mb-3">
                                 <label for="formFile" class="form-label">Browse a Banner Image</label>    
                                 <label for="formFile" class="form-label"></label>
-                                <input class="form-control bg-dark" name= "Image" type="file" id="formFile">
+                                <input class="form-control bg-dark" name="Image" type="file" id="formFile">
                         </div>
+
                         {{!-- <div class="mb-3">
                                 <label for="formFileMultiple" class="form-label">Multiple files input example</label> 
                                 <label for="formFileMultiple" class="form-label"></label>

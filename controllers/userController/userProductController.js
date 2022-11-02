@@ -24,6 +24,7 @@ module.exports ={
     }, 
     getCategoryView: async (req,res) => {
         let catId=req.params.id;
+        console.log("catId:",catId)
         let userId=req.session.user._id
         let user = req.session.user;
        // console.log("ZZZZZZZZZZZZZZ_session", req.session);
@@ -45,6 +46,5 @@ module.exports ={
           let proId = req.params.id;
           product = await productHelpers.getProductById(proId);
           res.render('userpages/singleProduct',{users:true,orderSuccess:true,product,cartCount,wishListCount,user})
-      },
-      
+      }
 }

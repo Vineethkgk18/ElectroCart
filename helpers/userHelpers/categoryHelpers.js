@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../../config/collections');
 const { DeploymentList } = require('twilio/lib/rest/preview/deployed_devices/fleet/deployment');
 const { response } = require('express');
-const Razorpay = require('razorpay')
+const Razorpay = require('razorpay');
+const { NetworkContext } = require('twilio/lib/rest/supersim/v1/network');
 require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID
 const authToken=process.env.TWILIO_AUTH_TOKEN
@@ -20,26 +21,30 @@ var instance = new Razorpay({
   module.exports={
     getCategory:()=>{
         return new Promise ( (resolve,reject) =>{
-            db.get().collection(collection.CATEGORY_COLLECTION).find().toArray().then((category)=>{
-                resolve(category)
-            })
+
+            try {
+                db.get().collection(collection.CATEGORY_COLLECTION).find().toArray().then((category)=>{
+                    resolve(category)
+                })
+            } catch (error) {
+                next(error)
+            }
+
         })
     },
 
     getFilterCategory:(cateID) => {
         return new Promise( (resolve, reject) => {
-            db.get().collection(collection.CATEGORY_COLLECTION).find({_id:objectId(cateID)}).toArray().then((response) =>{
-                //console.log("response:",response)
-                resolve(response)
-            })
+
+            try {
+                db.get().collection(collection.CATEGORY_COLLECTION).find({_id:objectId(cateID)}).toArray().then((response) =>{
+                    //console.log("response:",response)
+                    resolve(response)
+                })
+            } catch (error) {
+                next(error)
+            }
         })
-
     }
-
-
-
-
- 
-
 
 }

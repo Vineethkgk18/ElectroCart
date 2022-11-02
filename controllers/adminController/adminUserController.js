@@ -2,9 +2,9 @@ const adminHelpers = require('../../helpers/adminHelpers')
 
 module.exports ={
     getViewUser: (req,res)=>{
-        adminHelpers.getAllUsers().then((users)=>{
+        adminHelpers.getAllUsers().then((userdata)=>{
           //console.log("getusers:",users)
-          res.render('adminpages/admin-userManagement',{users})
+          res.render('adminpages/admin-userManagement',{userdata})
         })
       },
     getBlockUser: (req,res)=>{

@@ -7,7 +7,7 @@ const adminuController = require('../controllers/adminController/adminUserContro
 const admincController = require('../controllers/adminController/adminCategoryController')
 const adminpController = require('../controllers/adminController/adminProductController')
 const adminBannerController = require('../controllers/adminController/adminBannerController')
-
+const bannerHelpers = require('../helpers/adminHelpers/bannerHelpers');
 const multer = require('multer')
 //const upload = multer({ dest:'./public/Admin/uploadedImage'})  // --------------multer 
 
@@ -30,15 +30,19 @@ router.get('/adminLogin', adminhController.getAdminLogin)
 router.post('/adminLogin', adminhController.postAdminLogin)
 
 router.get ('/adminSignUp',adminhController.getAdminSignUp)
+
 router.post('/SignUp', adminhController.postAdminSignUp)
+
 //----------User Management -----------------------
 router.get('/viewUser', adminuController.getViewUser)
+
 // --------------block user ---------------------
 router.get('/blockUser/:id', adminuController.getBlockUser)
+
 //----------unblock user-----------------------
 router.get('/unblockUser/:id', adminuController.getUnBlockUser)
-//--------------Category Management Start here -------------
 
+//--------------Category Management Start here -------------
 router.get('/category', admincController.getCategory)
 
 router.get('/addCategory', admincController.getAddCategory)
@@ -54,7 +58,6 @@ router.get('/addProduct',adminpController.getAddProduct)
 
 router.post('/adminAddProduct', upload.array('Image',4), adminpController.postAddProduct)
 
-
 //----------Edit Product -------------------------------
 //router.get('/editProduct/:id', adminpController.getEditProduct)
 router.get('/editProduct/:id', adminpController.getEditProduct)
@@ -65,19 +68,19 @@ router.put('/adminEditProduct', upload.array('Image',4), adminpController.postEd
 //----------delete Product -----------------------------
 router.get('/deleteProduct/:id', adminpController.getDeleteProduct)
 
+// --------------Banner management -------------------------
 router.get('/banner',adminBannerController.getBannerManage)
-
+// --------------add new banner ----------------------------
 router.get('/addBanner', adminBannerController.getAddBanner)
-// router.get('/banner',async(req,res)=>{
-  
-//   res.render('adminpages/adminBannerManagement')
-  
-// })
+// --------------store new banner --------------------------
+router.post('/adminAddBanner', adminBannerController.postAddBanner)
+
 
 
 router.get('/order',async(req,res)=>{
   let order = await adminHelpers.getOrderDetails()
   //console.log("order:", order)
+
   res.render('adminpages/adminOrderManagement',{order})
 })
 

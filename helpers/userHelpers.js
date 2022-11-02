@@ -17,8 +17,8 @@ var instance = new Razorpay({
     key_secret:YOUR_KEY_SECRET
   });
 
-  console.log("key_id:",YOUR_KEY_ID)
-  console.log("key_secret:",YOUR_KEY_SECRET);
+//   console.log("key_id:",YOUR_KEY_ID)
+//   console.log("key_secret:",YOUR_KEY_SECRET);
 
 module.exports={
 
@@ -60,15 +60,13 @@ module.exports={
                 {
                     $match:{'Address.addId':add}
                 }
-            ]).toArray()
-            //console.log(address[0].Address)
-            resolve(address[0].Address)
-            //console.log(address[0].Address)
+            ]).toArray()            
+            resolve(address[0].Address)            
     })
 },
 placeOrder:(order,userId,total,cartProducts)=>{
     return new Promise( (resolve,reject)=>{
-    // console.log("ABABABABABAAB")  console.log("body",body); console.log("totalPrice",totalPrice) console.log("cartProducts",cartProducts)
+    
     let status = order.paymentMethod==='COD'?'placed':'pending'
     let orderObj={
         deliveryDetails:{
