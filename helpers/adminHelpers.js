@@ -201,24 +201,6 @@ deleteCoupon:(couponId)=>{
         })
     })
 
-},
-getUsersCount:()=>{
-    return new Promise( async (resolve,reject)=>{
-       let userCount = await db.get().collection(collection.USER_COLLECTION).find().count()
-       resolve(userCount)
-    })
-},
-getOrdersCount:()=>{
-    return new Promise( async (resolve,reject)=>{
-       let orderCount = await db.get().collection(collection.ORDER_COLLECTION).find().count()
-       resolve(orderCount)
-    })
-},
-getNumberOfOrderDelivered:()=>{ 
-    return new Promise( async (resolve,reject)=>{
-        let deliveredCount = await db.get().collection(collection.ORDER_COLLECTION).find({status:"Delivered"}).count()
-        resolve(deliveredCount)
-    })
 }
 
     
