@@ -1,11 +1,12 @@
 const adminHelpers = require('../../helpers/adminHelpers')
+const adminDashboardHelpers = require('../../helpers/adminHelpers/adminDashboardHelpers')
 const session = require('express-session');
 
 module.exports ={
     getAdminHome: async (req, res, next)=> {
-          let userCount = await adminHelpers.getUsersCount()          
-          let orderCount = await adminHelpers.getOrdersCount()
-          let deliveredCount = await adminHelpers.getNumberOfOrderDelivered()
+          let userCount = await adminDashboardHelpers.getUsersCount()          
+          let orderCount = await adminDashboardHelpers.getOrdersCount()
+          let deliveredCount = await adminDashboardHelpers.getNumberOfOrderDelivered()
           console.log("deliveredCount:",deliveredCount)
         res.render('adminpages/adminHome',{userCount,orderCount,deliveredCount})
       },

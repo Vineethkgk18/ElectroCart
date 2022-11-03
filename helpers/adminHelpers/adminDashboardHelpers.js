@@ -27,17 +27,6 @@ module.exports={
             }
         })
     },
-    getCodCount:()=>{
-        return new Promise( async(resolve,reject)=>{
-            try {
-                let codCount = await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"COD"}).count()
-                resolve(codCount)
-            } catch (error) {
-                
-            }
-        })
-
-    },
     getNumberOfOrderDelivered:()=>{ 
         return new Promise( async (resolve,reject)=>{
             try {
@@ -48,6 +37,26 @@ module.exports={
             }
             
         })
+    },getCodCount:()=>{
+        return new Promise( async(resolve,reject)=>{
+            try {
+                let codCount = await db.get().collection(collection.ORDER_COLLECTION).find({paymentMethod:"COD"}).count()
+                resolve(codCount)
+            } catch (error) {
+                
+            }
+        })
+
+    },
+    getOnlineCount: ()=>{
+         return new Promise( async (resolve,reject) =>{
+            try {
+                let onlineCount = await db.get().collection(collections.ORDER_COLLECTION).find({paymentMethod:"Online Payment"}).count()
+                resolve(onlineCount)
+            } catch (error) {
+               next(error) 
+            }
+         })
     }
     
 }
