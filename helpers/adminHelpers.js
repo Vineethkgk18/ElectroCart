@@ -139,17 +139,18 @@ getCategoryName:(cateId)=>{
         })
     },
 //---------------------------UPDATE Products -----------------------------
-updateProducts:(product_info)=>{
+updateProducts:(product)=>{
     return new Promise((resolve,reject) => {
         db.get().collection(collection.PRODUCT_COLLECTION)
-        .updateOne({_id:objectId(product_info.id)},{
+        .updateOne({_id:objectId(product.proId)},{
             $set:{
-                ProductName : product_info.ProductName,
-                ProductID : product_info.ProductID,
-                ProductDetails : product_info.ProductDetails,
-                Price : product_info.Price,
-                CategoryID : product_info.CategoryID,
-                Images : product_info.Images  
+                ProductName : product.ProductName,
+                ProductID : product.ProductID,
+                ProductDetails : product.ProductDetails,
+                Price : product.Price,
+                CategoryID : product.CategoryID,
+                CategoryName:product.CategoryName,
+                Images : product.Images  
             }
         }).then((response) =>{
             resolve()

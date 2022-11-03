@@ -25,7 +25,7 @@ module.exports ={
        let adminData = req.session.signUpData;
        let data = await adminHelpers.doSignup(adminData)
        //let sms = await twilioHelpers.sendSms(req.session.signUpData);
-        //res.render('userpages/user-otppage')
+        
         res.redirect('/admin/adminLogin')
       }
 

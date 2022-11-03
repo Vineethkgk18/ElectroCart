@@ -5,7 +5,7 @@ module.exports ={
     getProduct: (req,res)=>{
         adminHelpers.getAllProducts().then((products)=>{
          //console.log("products:",products)
-         res.render('adminpages/Admin-productManagement',{products})
+         res.render('adminpages/adminProductManagement',{products})
      })
      },
      getAddProduct: (req,res)=>{
@@ -21,8 +21,9 @@ module.exports ={
         }
         req.body.Images = Images;
         console.log("req.body:",req.body);
-       // let category = await adminHelpers.getCategoryName(req.body._id)
+       let category = await adminHelpers.getCategoryName(req.body.CategoryID)
         req.body.Images = Images;
+        req.body.CategoryName = category.Name;
         //req.body.CategoryID = category._id;
         adminHelpers.addProduct(req.body).then(()=>{
         res.redirect('/admin/product')
@@ -38,9 +39,14 @@ module.exports ={
         const Images = [];
         for( let i=0; i < req.files.length; i++ ){
           Images[i] = req.files[i].filename
-        }        
-        let category = await adminHelpers.getCategoryName(req.body._id)
-        req.body.Images = Images;        
+        }  
+         //console.log("SSSSSS_req.body.CatergotyID",req.body.CategoryID)
+
+        let category = await adminHelpers.getCategoryName(req.body.CategoryID)
+        req.body.CategoryName=category.Name;
+        req.body.Images = Images;  
+       let products = await adminHelpers.updateProducts(req.body)
+           
         res.redirect('/admin/product')
       },
       getDeleteProduct: (req,res) => {

@@ -4,7 +4,7 @@ module.exports ={
     getViewUser: (req,res)=>{
         adminHelpers.getAllUsers().then((userdata)=>{
           //console.log("getusers:",users)
-          res.render('adminpages/admin-userManagement',{userdata})
+          res.render('adminpages/adminUserManagement',{userdata})
         })
       },
     getBlockUser: (req,res)=>{

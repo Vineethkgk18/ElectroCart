@@ -27,7 +27,7 @@ module.exports={
             //console.log("ZZZZZZZZZZZZZZZZ_____req_session", req,session);
             res.redirect('/')
         }else{
-            res.render('userpages/user-login',{users:true,orderSuccess:true})//,{"loginError": req.session.loginError})
+            res.render('userpages/userLogin',{users:true,orderSuccess:true})//,{"loginError": req.session.loginError})
             req.session.loginError = false;
         }
     },
@@ -56,7 +56,7 @@ module.exports={
 
 
     getUserSignUp: (req,res) => {
-        res.render('userpages/user-signup',{users:false,})
+        res.render('userpages/userSignup',{users:false,})
     },
 
     postUserSignUp: async (req,res) => {
@@ -69,7 +69,7 @@ module.exports={
         else{
          let userData = req.session.signUpData;
          let sms = await twilioHelpers.sendSms(req.session.signUpData);
-          res.render('userpages/user-otppage')
+          res.render('userpages/userOtppage')
         }
        },
        postSignUpOtp: async(req,res)=>{

@@ -5,7 +5,7 @@ module.exports={
     getCategory:(req,res)=>{
         //console.log("Category")
         adminHelpers.showCategory().then((category) =>{
-          res.render('adminpages/admin-categoryManagement',{category})
+          res.render('adminpages/adminCategoryManagement',{category})
         })
     },
     getAddCategory:(req,res)=>{
