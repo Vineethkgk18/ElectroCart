@@ -34,10 +34,11 @@ var instance = new Razorpay({
     },
     getFilterProduct:(cateID) =>{       
         return new Promise ( (resolve, reject) =>{
-
+                    console.log(" Hi i am here ")
                 try {
+                    
                     //db.get().collection(collection.PRODUCT_COLLECTION).find({CategoryID:cateID}).toArray().then((response)=>{
-                    db.get().collection(collection.PRODUCT_COLLECTION).find({_id:objectId(cateID)}).toArray().then((response)=>{
+                    db.get().collection(collection.PRODUCT_COLLECTION).find({CategoryID:cateID}).toArray().then((response)=>{
                         console.log("getFilterProduct:",response)
                         resolve(response)
                     }) 

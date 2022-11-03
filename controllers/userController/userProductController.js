@@ -24,13 +24,14 @@ module.exports ={
     }, 
     getCategoryView: async (req,res) => {
         let catId=req.params.id;
-        console.log("catId:",catId)
+        
         let userId=req.session.user._id
         let user = req.session.user;
        // console.log("ZZZZZZZZZZZZZZ_session", req.session);
         let wishListCount = await wishListHelpers.wishListCount(userId)
         let cartCount = await cartHelpers.getCartCount(userId)
-        //console.log("SSSSSSSSSSSSSSSSSSSSSSSS",catId);        
+        //console.log("SSSSSSSSSSSSSSSSSSSSSSSS",catId);
+                
         let products = await productHelpers.getFilterProduct(catId);
         let category = await categoryHelpers.getCategory();
         let cat = await categoryHelpers.getFilterCategory(catId);
