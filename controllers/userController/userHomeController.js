@@ -16,10 +16,12 @@ module.exports={
         //console.log("ZZZZZZZZZZZZZZ_session", req.session);
         let cartCount = await cartHelpers.getCartCount(userId)
         let products = await productHelpers.getProducts();
+        let banner = await productHelpers.getBanner();
         let category = await categoryHelpers.getCategory();
         let wishListCount = await wishListHelpers.wishListCount(userId)
-       // console.log("AAAAAAAAAA____cartCount",cartCount)        
-            res.render('userpages/userHome',{users:true,orderSuccess:true,user,products,category,cartCount,wishListCount})
+       // console.log("AAAAAAAAAA____cartCount",cartCount) 
+
+            res.render('userpages/userHome',{users:true,orderSuccess:true,user,products,category,cartCount,wishListCount,banner})
     },
     getUserLogin: (req,res)=>{
         if(req.session.loggedIn)

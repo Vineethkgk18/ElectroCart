@@ -60,34 +60,14 @@
                 </div>
                 <div class="navbar-nav w-100">
                     <a href="/admin" class="nav-item nav-link"><i class="fa fa-tachometer-alt me-2"></i>Dashboard</a>
-                    <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>User</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="/admin/viewUser" class="dropdown-item">ViewUser</a>
-                        </div>
-                    </div>
-                    {{!-- <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown"><i class="fa fa-laptop me-2"></i>Elements</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="button.html" class="dropdown-item">Buttons</a>
-                            <a href="typography.html" class="dropdown-item">Typography</a>
-                            <a href="element.html" class="dropdown-item">Other Elements</a>
-                        </div> --
-                    -- </div> --}}
+                    
+                    <a href="/admin/viewUser" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>User</a>   
                     <a href="/admin/category" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Category</a>
                     <a href="/admin/product" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Product</a>
                     <a href="/admin/coupon" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Coupon</a>
                     <a href="/admin/order" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Order</a>
                     <a href="/admin/banner" class="nav-item nav-link"><i class="fa fa-laptop me-2"></i>Banner</a>
-                    {{!-- <div class="nav-item dropdown">
-                        <a href="#" class="nav-link dropdown-toggle " data-bs-toggle="dropdown"><i class="far fa-file-alt me-2"></i>Pages</a>
-                        <div class="dropdown-menu bg-transparent border-0">
-                            <a href="signin.html" class="dropdown-item">Sign In</a>
-                            <a href="signup.html" class="dropdown-item">Sign Up</a>
-                            <a href="404.html" class="dropdown-item">404 Error</a>
-                            <a href="blank.html" class="dropdown-item active">Blank Page</a>
-                        </div>
-                    </div> --}}
+                    
                 </div>
             </nav>
         </div>
@@ -141,9 +121,7 @@
             <div class="container-fluid pt-4 px-4">
                 {{!-- <div class="row vh-100 bg-secondary rounded align-items-center justify-content-center mx-0"></div> --}}
                 <div class="row bg-secondary rounded align-items-center justify-content-center mx-0">
-                    {{!-- <div class="col-md-6 text-center">
-                        <h3>This is blank page</h3>
-                    </div> --}}
+                   
                     <!-- Responsive table Start -->
                     <div class="col-12">
                         <div class="bg-secondary rounded h-100 p-4">
@@ -159,31 +137,29 @@
                                             <th scope="col">Sl No</th>                                            
                                             <th scope="col">Banner Name</th>                                        
                                             <th scope="col">subtitle</th>
-                                            <th scope="col">Image</th>
-                                            {{!-- <th scope="col">Minimum Amount</th>
-                                            <th scope="col">Expiry Date</th>
+                                            <th scope="col">Image</th>                                            
                                             <th scope="col">Edit Coupon</th>
-                                            <th scope="col">Delete Coupon</th> --}}
+                                            <th scope="col">Delete Coupon</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {{!-- {{#each }}
+                                        {{#each banner}}
                                         <tr>
-                                            
+                                            BannerSubtitle
                                             <th scope="row">{{ increment @index}}</th>                                            
-                                            <td>{{this.}}</td>
-                                            <td>{{this.}}</td>
-                                            <td>{{this.}}</td>
-                                            
+                                            <td>{{this.BannerName}}</td>
+                                            <td>{{this.BannerSubtitle}}</td>
+                                            {{!-- <td>{{this.}}</td> --}}
+                                            <td class="column-1"> <img width="50" height="60" src="/Admin/uploadedImage/{{this.Image}}" alt="IMG-PRODUCT">   </td>
                                             <td>
-                                                <a href="/admin/editCoupon/{{this._id}}"> <button type="button" class="btn btn-warning "> EDIT </button> </a>
+                                                <a href="/admin/editBanner/{{this._id}}"> <button type="button" class="btn btn-warning "> EDIT </button> </a>
                                             </td>
                                             <td>
-                                                <a href="/admin/deleteCoupon/{{this._id}}"> <button type="button" class="btn btn-danger "> DELETE </button>
+                                                <a href="/admin/deleteBanner/{{this._id}}"> <button type="button" class="btn btn-danger "> DELETE </button>
                                             </td>
                                             
                                         </tr>
-                                        {{/each}} --}}
+                                        {{/each}}
                                         
                                         
                                     </tbody>

@@ -4,7 +4,8 @@ const bcrypt = require('bcrypt')
 require('mongodb')
 const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../../config/collections');
 const { DeploymentList } = require('twilio/lib/rest/preview/deployed_devices/fleet/deployment');
-const { response } = require('express');
+//const { response } = require('express');
+const express = require('express');
 const Razorpay = require('razorpay')
 require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID

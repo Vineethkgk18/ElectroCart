@@ -1,14 +1,26 @@
 const adminHelpers = require('../../helpers/adminHelpers')
 const adminDashboardHelpers = require('../../helpers/adminHelpers/adminDashboardHelpers')
+const bannerHelpers = require('../../helpers/adminHelpers/bannerHelpers');
 const session = require('express-session');
 
 module.exports ={
     getAdminHome: async (req, res, next)=> {
-          let userCount = await adminDashboardHelpers.getUsersCount()          
-          let orderCount = await adminDashboardHelpers.getOrdersCount()
-          let deliveredCount = await adminDashboardHelpers.getNumberOfOrderDelivered()
+         let userCount = await adminDashboardHelpers.getUsersCount()          
+         let orderCount = await adminDashboardHelpers.getOrdersCount()
+         let deliveredCount = await adminDashboardHelpers.getNumberOfOrderDelivered()
+         let codCount = await adminDashboardHelpers.getCodCount()
+         let onlineCount = await adminDashboardHelpers.getOnlineCount()
+          //let banner = await bannerHelpers.viewBanner();
+          //let MonthlySales = await adminDashboardHelpers.getTotalSalesMonthly()
+          // let MonthlySales =  await adminDashboardHelpers.getTotalMonthly()
+          // console.log("QQQQQQ_MonthlySales", MonthlySales)
+          // console.log("QQQQ__banner",banner)
+
+          console.log(" AAAA_onlineCount:",onlineCount)
+          console.log("BBBB_codCount:", codCount)
           console.log("deliveredCount:",deliveredCount)
-        res.render('adminpages/adminHome',{userCount,orderCount,deliveredCount})
+      res.render('adminpages/adminHome',{userCount,orderCount,deliveredCount})
+       // res.render('adminpages/adminHome')
       },
     getAdminSignUp:(req,res)=>{
         res.render('adminpages/adminSignUp')

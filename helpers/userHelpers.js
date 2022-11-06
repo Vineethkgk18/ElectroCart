@@ -3,7 +3,8 @@ const collection=require('../config/collections')
 const bcrypt = require('bcrypt')
 const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../config/collections');
 const { DeploymentList } = require('twilio/lib/rest/preview/deployed_devices/fleet/deployment');
-const { response } = require('express');
+//const { response } = require('express');
+const express = require('express');
 const Razorpay = require('razorpay')
 require('dotenv').config();
 const accountSid = process.env.TWILIO_ACCOUNT_SID
@@ -88,39 +89,7 @@ placeOrder:(order,userId,total,cartProducts)=>{
      })
 
     })
-},
-getOrderProducts: (orderId)=>{
-    return new Promise ( async (resolve, reject)=>{
-        let orderItems = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
-            {
-                $match:{_id:objectId(orderId)}
-            },
-            {
-                $unwind:'$products'
-            },
-            {
-                $project:{
-                    item:'$products.item',
-                    quantity:'$products.quantity'                    
-                }
-            },
-            {
-                $lookup:{
-                    from:collection.PRODUCT_COLLECTION,
-                    localField:'item',
-                    foreignField:'_id',
-                    as:'product'
-                }
-             },
-            {
-                $project:{
-                    item:1,quantity:1,product:{$arrayElemAt:['$product',0]}
-                }
-            }                            
-        ]).toArray()
-         resolve(orderItems)
-    })
-},    
+}, 
 generatedRazorPay:(orderId,total) =>{
     return new Promise( (resolve,reject)=>{
         try{
@@ -163,7 +132,6 @@ generatedRazorPay:(orderId,total) =>{
             }
         }catch{}
     })
-
   },
   changePaymentStatus:(orderId)=>{
     return new Promise( (resolve,reject)=>{
@@ -178,16 +146,51 @@ generatedRazorPay:(orderId,total) =>{
             resolve()
         })
     })
-
   },
   getOrder:(userId)=>{
-    return new Promise( (resolve,reject)=>{
-            console.log("userId:",objectId(userId));
+    return new Promise( (resolve,reject)=>{            
         db.get().collection(collection.ORDER_COLLECTION).find({userId:objectId(userId)}).toArray().then( (response)=>{
-            //console.log("order:", response)
             resolve(response)
         })
     })
+},
+getOrderProducts: (userId,orderId)=>{
+    return new Promise (async(resolve, reject)=>{
+        try {
+            let orderItem = await db.get().collection(collection.ORDER_COLLECTION).aggregate([
+                {
+                    $match:{_id:objectId(orderId)}
+                }
+               ]).toArray()
+               //console.log(orderItem)
+               resolve(orderItem)
+           // console.log("America")
+        } catch (error) {
+            
+        }
+        
+    })
+},
+changeOrderStatus:(orderId)=>{
+        return new Promise( async(resolve,reject) =>{
+            try {
+                console.log("7777777777777777777")
+                console.log("orderId:",orderId)
+                db.get().collection(collection.ORDER_COLLECTION)
+                .updateOne({_id:orderId},
+                {
+                    $set: {
+                            status:"cancelled"
+                          }
+                }                
+                ).then( ()=>{
+                    console.log("successsssssss")
+                    resolve()
+                })
+            } catch (error) {
+                
+            }
+        })
 },
 getCoupon:()=>{
     return new Promise( (resolve,reject)=>{
@@ -196,7 +199,6 @@ getCoupon:()=>{
         })
     })
 }
-
 
 }
 

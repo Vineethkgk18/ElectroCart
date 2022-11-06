@@ -1,5 +1,4 @@
 const express = require('express');
-// const { response } = require('../app');
 const adminHelpers = require('../helpers/adminHelpers');
 const router = express.Router();
 const adminhController = require('../controllers/adminController/adminHomeController')
@@ -7,7 +6,7 @@ const adminuController = require('../controllers/adminController/adminUserContro
 const admincController = require('../controllers/adminController/adminCategoryController')
 const adminpController = require('../controllers/adminController/adminProductController')
 const adminBannerController = require('../controllers/adminController/adminBannerController')
-const bannerHelpers = require('../helpers/adminHelpers/bannerHelpers');
+//const bannerHelpers = require('../helpers/adminHelpers/bannerHelpers');
 const multer = require('multer')
 //const upload = multer({ dest:'./public/Admin/uploadedImage'})  // --------------multer 
 
@@ -71,9 +70,9 @@ router.get('/deleteProduct/:id', adminpController.getDeleteProduct)
 // --------------Banner management -------------------------
 router.get('/banner',adminBannerController.getBannerManage)
 // --------------add new banner ----------------------------
-router.get('/addBanner', adminBannerController.getAddBanner)
+router.get('/addBanner',adminBannerController.getAddBanner)
 // --------------store new banner --------------------------
-router.post('/adminAddBanner', adminBannerController.postAddBanner)
+router.post('/adminAddBanner',upload.array('Image',1), adminBannerController.postAddBanner)
 
 
 
@@ -130,31 +129,25 @@ router.get("/deleteCoupon/:id",async(req,res)=>{
   res.redirect('/admin/coupon')
 })
 
+router.use(function(req, res, next) {
+  next(createError(404));
+});
+
+router.use(function(err, req, res, next) {
+  console.log(err);
+  // set locals, only providing error in development
+  res.locals.message = err.message;
+  res.locals.error = req.app.get('env') === 'development' ? err : {};
+  // render the error page
+  res.status(err.status || 500);
+  res.render('adminpages/adminError');
+});
 
 module.exports = router;  
 
 
 
 
-//------------multer Single Image -------------------------------
-// router.post('/adminAddProduct', upload.single('Image'), (req,res)=>{
-//   console.log(req.file, req.body)
-//    adminHelpers.addProduct(req.body).then((response)=>{
-//      res.redirect('/admin/product')
-//    })
-// })
-//--------------multiple file using multer ---------------------
-// router.post('/adminAddProduct', upload.array('Image',4), (req,res) => {
-//     console.log(req.files)
-//     const Images = [];
-//     for( let i=0; i < req.files.length; i++ ){
-//       Images[i] = req.files[i].filename
-//     }
-//     req.body.Images = Images;
-//     adminHelpers.addProduct(req.body).then(()=>{
-//     res.redirect('/admin/product')
-//   })
-// })
 
 
 

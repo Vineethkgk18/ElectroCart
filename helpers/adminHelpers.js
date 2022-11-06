@@ -2,7 +2,7 @@ var db= require('../config/connection')
 var collection=require('../config/collections')
 const bcrypt = require('bcrypt')
 const { response } = require('express')
-const { get } = require('../app')
+//const { get } = require('../app')
 var objectId=require('mongodb').ObjectId
 
 module.exports={
@@ -39,11 +39,9 @@ module.exports={
     },
     doSignup:(adminData)=>{       
         return new Promise(async(resolve,reject)=>{
-            
            userData.Password=await bcrypt.hash(adminData.Password,10)
            db.get().collection(collection.ADMIN_COLLECTION).insertOne(adminData).then((Data)=>{
-            resolve(Data.insertedId)
-                
+            resolve(Data.insertedId)       
         })
       })
     },
@@ -64,7 +62,6 @@ module.exports={
             })
         })
     },
-    
     unBlockUser:(userId)=>{
         return new Promise((resolve,reject)=>{
             console.log(" XXXXXXXXXXXXXXXXXXXXXXXXXXX  ")
@@ -75,8 +72,7 @@ module.exports={
     },  
     //---------------------------------CategoryManagement ---------------------------------------
     addCategory:(category_name)=>{
-        return new Promise( (resolve,reject) => {
-            //let category = 
+        return new Promise( (resolve,reject) => {            
             db.get().collection(collection.CATEGORY_COLLECTION).insertOne(category_name).then((response)=>{
                 console.log(" category name added to database");
                 resolve(response)
@@ -86,10 +82,8 @@ module.exports={
     showCategory:() =>{
         return new Promise( async (resolve,reject) =>{
            // console.log("show category")
-            let Category = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()
-            //console.log("show category")
-                resolve(Category)
-                //console.log("show category")
+            let Category = await db.get().collection(collection.CATEGORY_COLLECTION).find().toArray()            
+                resolve(Category)                
         })
     },
     deleteCategory:(cateID)=>{

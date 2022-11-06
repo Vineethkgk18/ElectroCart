@@ -3,13 +3,17 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
+var hbs=require('express-handlebars')
+
 var adminRouter = require('./routes/admin');
 var usersRouter = require('./routes/users');
-var hbs=require('express-handlebars')
+
 const multer = require('multer')
 var db = require('./config/connection')
+
 var app = express();
 var session = require('express-session');
+
 const router = require('./routes/admin');
 const userHelpers = require('./helpers/userHelpers');
 // view engine setup

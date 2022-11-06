@@ -42,7 +42,7 @@
 											<td>{{this.paymentMethod}}</td>
 											<td>{{this.status}}</td>
 											<td>
-												<a href="viewOrderProducts/{{this._id}}" class="btn btn-primary">View Products </a>
+												<a href="/viewOrderProducts/{{this._id}}" class="btn btn-primary">View Products </a>
 											</td>
 
 										</tr>
@@ -86,6 +86,11 @@
 				}
 			})
 		}
-	 
-
 	</script>
+
+	{{!-- <script>
+		function viewOrderProducts(orderId)
+		{
+			alert("AWESWWW_ orderId", orderId)
+		}
+	</script> --}}

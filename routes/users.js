@@ -12,10 +12,12 @@ const cartHelpers = require('../helpers/userHelpers/cartHelpers')
 
 const wishListHelpers = require('../helpers/userHelpers/wishListHelpers')
 const checkOutHelpers = require('../helpers/userHelpers/checkOutHelpers')
+const db = require ('../config/connection')
 
+ //const { get } = require('../config/connection');
 
-const { get } = require('../config/connection');
-const { Db, ObjectId } = require('mongodb-legacy');
+//const { Db, ObjectId } = require('mongodb-legacy');
+
 const { json } = require('express');
 const objectId=require('mongodb').ObjectId
 /* GET users listing. */
@@ -121,7 +123,6 @@ router.get('/userCheckOut',verifyLogin, async(req,res) =>{
   
   let addressInfo = req.session.user;
   console.log("00000000000000000000000000000", Products);
-  //console.log("req.session.user._id",req.session.user)
   let grantTotal = totalPrice;
   let discountAmount=0;
   res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,discountAmount,grantTotal,Products,wProducts,wishListCount,cartCount,addressInfo,coupon })
@@ -133,26 +134,18 @@ router.post('/billingAddress', verifyLogin, async(req,res) =>{
   let Products = await cartHelpers.getCartProducts(userId)
   let address = await userHelpers.getAddressById(add,userId)
    res.json({address})
-   //console.log("XXXXXXXXXXXXXXXXXX",address)
 })
 
 router.post('/confirmOrder',verifyLogin, async(req,res)=>{
-  //console.log("XXXXXXXreq.body", req.body)
   let userId = req.session.user._id;
   let totalPrice = await cartHelpers.getTotoalPrice(userId)
   let cartProducts = await cartHelpers.getCartProducts(userId)
   userHelpers.placeOrder(req.body,userId,totalPrice,cartProducts).then((orderId)=>{
-      //console.log("req.body.paymentMethod:", req.body.paymentMethod);
-      //  console.log("orderId:",objectId(orderId))
-      //  console.log("XXXXXXXXXXXXXXXXXXXXXXXXX");
-      //  console.log("orderId:",orderId)
-
     if(req.body.paymentMethod ==='COD'){
       res.json({codSuccess:true})
     }
     else{
       userHelpers.generatedRazorPay(orderId,totalPrice).then((response)=>{
-        //console.log("-----------response",response)
         res.json({response})
      })
     }   
@@ -160,23 +153,42 @@ router.post('/confirmOrder',verifyLogin, async(req,res)=>{
 })
 
 router.get('/orderSuccess',verifyLogin, async(req,res)=>{
-  //console.log()
-  res.render('userpages/userOrderSuccess')//{users:true,orderSuccess:false})
+  res.render('userpages/userOrderSuccess')
 })
 
 router.get('/viewOrder',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let order = await userHelpers.getOrder(userId);
-  console.log("78787878787878")
-  console.log("ViewOrder", order)
- //console.log("XXXXXXXXXX_Order",order)
-  res.render('userpages/viewOrder',{users:true,order})
+  res.render('userpages/viewOrderHistory',{users:true,order})
 })
 
-router.get('/viewOrderProducts/:id', async(req,res)=>{
-  let products= await userHelpers.getOrderProducts(req.params.id)
+router.get('/viewOrderProducts/:id',verifyLogin,async(req,res)=>{
+  userId = req.session.user._id;
+  orderId = req.params.id;
 
+  // console.log("Hi i am here XXXXXXXXXXX",orderId);
+  // console.log("Hi i am here XXXXXXXXXXX",userId);
+
+  let orderItem= await userHelpers.getOrderProducts(userId,orderId)
+  // console.log("orderItem:", orderItem)
+  // console.log("orderItem_length:",orderItem[0].products)
+  let orderProducts = orderItem[0].products;
+  
+  res.render("userpages/userViewOrder",{orderProducts,orderId})
 })
+router.post( '/changeOrderStatus', verifyLogin, async(req,res)=>{
+      let orderId = req.body.orderId;
+      console.log("0000000000_orderId", orderId)
+      let orderStatus = await userHelpers.changeOrderStatus(orderId)
+      //console.log("orderStatu:",orderStatus) 
+  res.json({status:true})
+})
+
+router.get('/orderCancelled',verifyLogin,(req,res)=>{
+
+  res.render("userpages/userOrderCancelled")
+})
+
 router.post('/verifyPayment',verifyLogin, (req,res)=>{
   //console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZ")
   console.log("req.body['order[response][receipt]']:",req.body['order[response][receipt]']);

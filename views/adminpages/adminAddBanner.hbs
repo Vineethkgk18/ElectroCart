@@ -55,7 +55,7 @@
                          <h3>Add Banner</h3>
                         </div>
                         {{!-- <form action="/admin/adminAddBanner" method="POST" enctype="multipart/form-data" ></form> --}}
-                    <form action="/admin/adminAddBanner" method="POST" >
+                    <form action="/admin/adminAddBanner" method="POST" enctype="multipart/form-data" >
                         <div class="form-floating mb-3">
                             <input type="text" name= "BannerName" class="form-control" id="floatingText" placeholder="jhondoe">
                             <label for="floatingText">Banner Name</label>
@@ -64,24 +64,12 @@
                             <input type="text" name= "BannerSubtitle" class="form-control" id="floatingText" placeholder="jhondoe">
                             <label for="floatingText">Banner Subtitle</label>
                         </div>
-                        
-                        {{!-- image input form  --}}
-
                         <div class="mb-3">
                                 <label for="formFile" class="form-label">Browse a Banner Image</label>    
                                 <label for="formFile" class="form-label"></label>
-                                <input class="form-control bg-dark" name="Image" type="file" id="formFile">
-                        </div>
-
-                        {{!-- <div class="mb-3">
-                                <label for="formFileMultiple" class="form-label">Multiple files input example</label> 
-                                <label for="formFileMultiple" class="form-label"></label>
-                                <img src="" alt="" style=""  id="" >
-                                <input class="form-control bg-dark" type="file" name= "Image" id="formFileMultiple" multiple>
-                        </div>
-                         --}}
+                                <input class="form-control bg-dark" name="Image" type="file" id="formFile" >
+                        </div>                    
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Add Banner</button>
-                        {{!-- <p class="text-center mb-0">Already have an Account? <a href="">Sign In</a></p> --}}
                     </form>
                     </div>
                 </div>

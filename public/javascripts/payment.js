@@ -12,7 +12,6 @@
       success: (res) => {
         /*  response object return the date from the backend and here the 
             data recieved in res is send to the fronded using dom  
-        
         */
           document.getElementById("Name").value = res.address.Name;
           document.getElementById("email").value = res.address.Email;
@@ -48,12 +47,7 @@
     })
 
   }
-  // function addAddres(){
-  //   console.log("SSSSSSSSSSSS")
-  //   const formData = new FormData();
-
-    
-  // }
+  
   
 
   function applyCoupon(couponId,couponName,DiscountAmount,totalPrice) {
@@ -167,7 +161,8 @@ function razorpayPayment(order){
     
     "key":"rzp_test_3VrbJtZm0Ok6hL",
     //"key":YOUR_KEY_ID, // Enter the Key ID generated from the Dashboard
-    "amount": parseInt(order.response.amount) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    //"amount": parseInt(order.response.amount) * 100, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+    "amount": 5 * 100,
     // "amount": 40000,
     "currency": "INR",
     "name": "ElectroCart",
