@@ -14,33 +14,32 @@ module.exports={
                     resolve(response)
                 })
             } catch (error) {
-                
+                next(error)
             }    
         })
     },
+
     viewBanner:()=>{
         return new Promise(async(resolve, reject) =>{
             try {
                     let banner = await db.get().collection(collection.BANNER_COLLECTION).find().toArray()
                     resolve(banner)
             } catch (error) {
-            // reject(error)
+                next(error)            
             }
         })
     },
+    
     deleteBanner: (bannerId)=>{
         return new Promise(async (resolve, reject) => {
             try {
                     db.get().collection(collection.BANNER_COLLECTION).deleteOne({ _id: objectId(bannerId) }).then((response) => {
-                    resolve(response)
-            
-                    })
-                
+                    resolve(response)            
+                    })                
             } catch (error) {
-            // reject(error)
+                next(error)
             }
         })
-
     }
 
 }

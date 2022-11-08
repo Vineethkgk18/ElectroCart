@@ -1,4 +1,4 @@
-const adminHelpers = require('../../helpers/adminHelpers')
+const adminHelpers = require('../../helpers/adminHelpers/adminHelpers')
 const session = require('express-session');
 const bannerHelpers = require('../../helpers/adminHelpers/bannerHelpers');
 
@@ -21,12 +21,13 @@ module.exports={
         }
     },
     postAddBanner:async(req,res) =>{
-        //let bannerData = req.body;
-        // console.log("XXXXXXXXXXXXXXXXXXXXXXXXbannerData _req,body:",req.body)
-        // console.log(" request.bodyy.files:", req.files)
-        req.body.Image = req.files[0].filename;        
-        let ban = await bannerHelpers.addbanner(req.body).then(()=>{
-          res.redirect('/admin/banner')
-        })
-      }
+        try {
+            req.body.Image = req.files[0].filename;        
+            let ban = await bannerHelpers.addbanner(req.body)
+            res.redirect('/admin/banner')
+        } catch (error) {
+            next(error)
+        }
+        
+    } 
 }

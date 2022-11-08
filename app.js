@@ -15,18 +15,20 @@ var app = express();
 var session = require('express-session');
 
 const router = require('./routes/admin');
-const userHelpers = require('./helpers/userHelpers');
+//const userHelpers = require('./helpers/userHelpers');
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'hbs');
 //app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname+'/views/layout/',partialsDir:__dirname+'/views/partials/'}))
-app.engine('hbs',hbs.engine({helpers:{increment:function(value,options){return parseInt(value)+1;},eqPacked: (status)=>{
+app.engine('hbs',hbs.engine({helpers:{increment:function(value,options){return parseInt(value)+1;},
+eqPacked: (status)=>{
   return status==='packed'? true : false
 },
+
 eqShipped: (status)=>{
   return status==='Shipped'? true : false
-}
-,
+},
+
 eqPlaced: (status)=>{
   return status==='placed'? true : false
 },
@@ -78,9 +80,9 @@ app.use(function(err, req, res, next) {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
-
   // render the error page
   res.status(err.status || 500);
-  res.render('error');
+  res.render('adminpages/adminError')
+  //res.render('error');
 });
 module.exports = app;

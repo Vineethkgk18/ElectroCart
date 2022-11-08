@@ -66,10 +66,7 @@ module.exports={
         } catch (error) {
             next(error)
         }
-
-
     },
-
 
     getCartProducts: (userId)=>{
             return new Promise ( async (resolve, reject)=>{
@@ -109,19 +106,20 @@ module.exports={
                 }                         
         })
     },
+
     getCartCount:(userId) =>{
         return new Promise ( async(resolve,reject)=>{
 
                 try {
                     let count=0;
-                let cart = await db.get().collection(collection.CART_COLLECTION).findOne({user:objectId(userId)})
-                if(cart){
-                    count= cart.products.length
-                }
-                else{
-                    count=0;
-                }
-                resolve(count)
+                    let cart = await db.get().collection(collection.CART_COLLECTION).findOne({user:objectId(userId)})
+                    if(cart){
+                        count= cart.products.length
+                    }
+                    else{
+                        count=0;
+                    }
+                    resolve(count)
                 } catch (error) {
                     next(error)
                 }

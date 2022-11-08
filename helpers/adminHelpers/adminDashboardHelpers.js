@@ -13,7 +13,7 @@ module.exports={
                 let userCount = await db.get().collection(collection.USER_COLLECTION).countDocuments()
                 resolve(userCount)
             } catch (error) {
-               // next(error)
+               next(error)
             }
         })
     },
@@ -23,7 +23,7 @@ module.exports={
                 let orderCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments()
                 resolve(orderCount)
             } catch (error) {
-                //next(error)
+                next(error)
             }
         })
     },
@@ -33,7 +33,7 @@ module.exports={
                 let deliveredCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({status:"Delivered"})
                 resolve(deliveredCount)
              } catch (error) {
-                //next(error)
+                next(error)
             }
             
         })
@@ -50,14 +50,14 @@ module.exports={
     getOnlineCount: ()=>{
          return new Promise( async (resolve,reject) =>{
 
-            let onlineCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentMethod:"Online Payment"})
-            resolve(onlineCount)        
-            // try {
-            //     let onlineCount = await db.get().collection(collections.ORDER_COLLECTION).find({paymentMethod:"Online Payment"}).count()
-            //     resolve(onlineCount)
-            // } catch (error) {
-            //    //next(error) 
-            // }
+            try {
+                let onlineCount = await db.get().collection(collection.ORDER_COLLECTION).countDocuments({paymentMethod:"Online Payment"})
+                resolve(onlineCount)
+            } catch (error) {
+                next(error)
+            }
+                    
+            
          })
     },
     getTotalSalesMonthly:()=>{
@@ -85,7 +85,7 @@ module.exports={
                     resolve(response)
             
             } catch (error) {
-                
+                next(error)
             }
         })
     }

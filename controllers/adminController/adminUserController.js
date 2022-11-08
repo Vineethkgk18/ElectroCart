@@ -1,28 +1,32 @@
-const adminHelpers = require('../../helpers/adminHelpers')
+const adminHelpers = require('../../helpers/adminHelpers/adminHelpers')
 
 module.exports ={
-    getViewUser: (req,res)=>{
-        adminHelpers.getAllUsers().then((userdata)=>{
-          //console.log("getusers:",users)
+    getViewUser: async(req,res)=>{
+        try {
+          let userdata = await adminHelpers.getAllUsers()
           res.render('adminpages/adminUserManagement',{userdata})
-        })
+        } catch (error) {
+              next(error)
+        } 
+    },
+    getBlockUser: async(req,res)=>{
+        try {
+              let userId = req.params.id;        
+              let response = await adminHelpers.blockUser(userId)
+              res.redirect('/admin/viewUser')
+        } catch (error) {
+            next(error)
+        }
+        
+       
       },
-    getBlockUser: (req,res)=>{
-        console.log("block user")
-        let userId = req.params.id;
-        console.log(userId)
-        adminHelpers.blockUser(userId).then((response) =>{
-          res.redirect('/admin/viewUser')
-        })
-      },
-      getUnBlockUser: (req,res)=>{
-        console.log("unblock user")
-        let userId = req.params.id;
-        console.log(userId)
-      //   console.log("block user")
-      //   // console.log(userId)
-        adminHelpers.unBlockUser(userId).then((response) =>{
-            res.redirect('/admin/viewUser')
-          })
-      }
+    getUnBlockUser: async(req,res)=>{
+        try {
+              let userId = req.params.id;        
+              let response = await adminHelpers.unBlockUser(userId)
+              res.redirect('/admin/viewUser')
+        } catch (error) {
+              next(error)
+        }
+    }
 }

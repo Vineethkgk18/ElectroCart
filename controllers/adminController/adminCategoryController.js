@@ -1,33 +1,38 @@
-const adminHelpers = require('../../helpers/adminHelpers')
+const adminHelpers = require('../../helpers/adminHelpers/adminHelpers')
 const session = require('express-session');
 
 module.exports={
-    getCategory:(req,res)=>{
-        //console.log("Category")
-        adminHelpers.showCategory().then((category) =>{
-          res.render('adminpages/adminCategoryManagement',{category})
-        })
+    getCategory:async (req,res)=>{        
+            try {
+              let category = await adminHelpers.showCategory()
+              res.render('adminpages/adminCategoryManagement',{category})
+            } catch (error) {
+              next(error)
+            }
     },
     getAddCategory:(req,res)=>{
-        res.render('adminpages/adminAddCategory')
+          try {
+            res.render('adminpages/adminAddCategory')
+          } catch (error) {
+            next(error)
+          }        
+    },
+    getDeleteCategory:async (req,res)=>{
+          try {
+            let cateID = req.params.id;
+            let response = await adminHelpers.deleteCategory(cateID)
+            res.redirect('/admin/category')
+          } catch (error) {
+            next(error)
+          }     
       },
-    getDeleteCategory:(req,res)=>{        
-         let cateID = req.params.id;
-         console.log("AAAAAAAAAAA",cateID)
-         //console.log(cateID)
-         adminHelpers.deleteCategory(cateID).then((response)=>{
-          console.log(response)
-           res.redirect('/admin/category')
-         })
-      },
-      postAddCategory:(req,res)=>{
-        console.log('req_body',req.body)
-        adminHelpers.addCategory(req.body).then((response)=>{
-          console.log('category added')
-          res.redirect('/admin/category')
-          //res.redirect
-        })
-        //res.redirect('/category')
+      postAddCategory:async(req,res)=>{
+            try {
+                let response = await adminHelpers.addCategory(req.body)
+                res.redirect('/admin/category')
+            } catch (error) {
+              next(error)
+            }     
       }
 
 }

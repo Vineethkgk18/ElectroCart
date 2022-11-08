@@ -1,25 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const userHelpers = require('../helpers/userHelpers')
+const userHelpers = require('../helpers/userHelpers/userHelpers')
 const twilioHelpers = require('../helpers/twilioHelpers')
 const session = require('express-session');
 const userController = require ('../controllers/userController/userHomeController')
 const prodController =require ('../controllers/userController/userProductController')
 const cartController =require ('../controllers/userController/userCartController');
 const wishListController = require ('../controllers/userController/wishListController');
+const checkOutController = require ('../controllers/userController/checkOutController');
+const userOrderController = require ('../controllers/userController/userOrderController' )
 
 const cartHelpers = require('../helpers/userHelpers/cartHelpers')
-
 const wishListHelpers = require('../helpers/userHelpers/wishListHelpers')
 const checkOutHelpers = require('../helpers/userHelpers/checkOutHelpers')
 const db = require ('../config/connection')
-
- //const { get } = require('../config/connection');
-
-//const { Db, ObjectId } = require('mongodb-legacy');
-
 const { json } = require('express');
 const objectId=require('mongodb').ObjectId
+
 /* GET users listing. */
 
 const verifyLogin=(req,res,next)=>{
@@ -53,25 +50,23 @@ router.post('/otp', userController.postSignUpOtp)
 
 router.get('/logout', userController.getUserLogOut)
 
-//##################################################################
-
 router.get('/profile',verifyLogin,(req,res) =>{
   let user = req.session.user;
   res.render('userpages/userProfile',{users:true,user,orderSuccess:true})
 })
-
 
 router.post('/userProfileAddress',verifyLogin, async(req,res)=>{
   let userId = req.session.user._id;
   let address = await userHelpers.addUserAddress(userId,req.body)
   res.redirect('/profile')
 })
+router.get('/errorPage',(req,res) =>{
+  res.render('userpages/userError')
+})
 router.post('/addAddress',(req,res)=>{
 
-  console.log("XXXXXX_req.body", req.body);
-  
+  console.log("XXXXXX_req.body", req.body);  
 })
-
 
  //router.get('/allProducts, prodController.allProductView')
  
@@ -88,150 +83,37 @@ router.get('/viewCart',verifyLogin, cartController.getViewCart)
 router.post('/changeProductQuantity',verifyLogin, cartController.postChangeProductQuantity)
 
 router.get('/placeOrder',verifyLogin, async(req,res)=>{
-  //let total = await userHelpers.getToatalPrice(req.session.user._id)
-  res.render('userpages/userProfile',{users:true,orderSuccess:true})//,{total,users:true})
-})
-
-
-router.get('/addToWishList/:id',verifyLogin, async(req,res)=>{
-  console.log("add to wishlist")
-  let proId = req.params.id;
-  let userId = req.session.user._id;
-  let userWishList =  await wishListHelpers.addToWishlist(proId,userId)
-  console.log("added to wishlist")
-      res.json({status:true})
-})
-
-router.get('/viewWishList',verifyLogin, async(req,res)=>{
-  let userId = req.session.user._id;
-  let user = req.session.user;
-  let wProducts = await wishListHelpers.getWishListProducts(userId)
-  let cartCount = await cartHelpers.getCartCount(userId)
-  console.log("PPPPPPPP",wProducts)
-  res.render('userpages/userWishlist',{wProducts,cartCount,users:true,orderSuccess:true,user})
-})
-
-router.get('/userCheckOut',verifyLogin, async(req,res) =>{
-  let userId = req.session.user._id;
-  let user = req.session.user;
-  let coupon = await userHelpers.getCoupon()
-  let Products = await cartHelpers.getCartProducts(userId)
-  let wishListCount = await wishListHelpers.wishListCount(userId) 
-  let totalPrice = await cartHelpers.getTotoalPrice(userId)
-  let wProducts = await wishListHelpers.getWishListProducts(userId)
-  let cartCount = await cartHelpers.getCartCount(userId)  
-  
-  let addressInfo = req.session.user;
-  console.log("00000000000000000000000000000", Products);
-  let grantTotal = totalPrice;
-  let discountAmount=0;
-  res.render('userpages/checkOut',{users:true,valueOf,user,totalPrice,discountAmount,grantTotal,Products,wProducts,wishListCount,cartCount,addressInfo,coupon })
-})
-
-router.post('/billingAddress', verifyLogin, async(req,res) =>{
-  let userId = req.session.user._id;
-  let add = req.body.address
-  let Products = await cartHelpers.getCartProducts(userId)
-  let address = await userHelpers.getAddressById(add,userId)
-   res.json({address})
-})
-
-router.post('/confirmOrder',verifyLogin, async(req,res)=>{
-  let userId = req.session.user._id;
-  let totalPrice = await cartHelpers.getTotoalPrice(userId)
-  let cartProducts = await cartHelpers.getCartProducts(userId)
-  userHelpers.placeOrder(req.body,userId,totalPrice,cartProducts).then((orderId)=>{
-    if(req.body.paymentMethod ==='COD'){
-      res.json({codSuccess:true})
+    try {
+          //let total = await userHelpers.getToatalPrice(req.session.user._id)
+          res.render('userpages/userProfile',{users:true,orderSuccess:true})//,{total,users:true})
+    } catch (error) {
+        next(error)
     }
-    else{
-      userHelpers.generatedRazorPay(orderId,totalPrice).then((response)=>{
-        res.json({response})
-     })
-    }   
-  })
 })
 
-router.get('/orderSuccess',verifyLogin, async(req,res)=>{
-  res.render('userpages/userOrderSuccess')
-})
+router.get('/addToWishList/:id',verifyLogin,  wishListController.getAddToWishList)
 
-router.get('/viewOrder',verifyLogin, async(req,res)=>{
-  let userId = req.session.user._id;
-  let order = await userHelpers.getOrder(userId);
-  res.render('userpages/viewOrderHistory',{users:true,order})
-})
+router.get('/viewWishList',verifyLogin, wishListController.getViewWishList)
 
-router.get('/viewOrderProducts/:id',verifyLogin,async(req,res)=>{
-  userId = req.session.user._id;
-  orderId = req.params.id;
+router.get('/userCheckOut',verifyLogin,checkOutController.getUserCheckOut)
 
-  // console.log("Hi i am here XXXXXXXXXXX",orderId);
-  // console.log("Hi i am here XXXXXXXXXXX",userId);
+router.post('/billingAddress', verifyLogin,checkOutController.postBillingAddress)
 
-  let orderItem= await userHelpers.getOrderProducts(userId,orderId)
-  // console.log("orderItem:", orderItem)
-  // console.log("orderItem_length:",orderItem[0].products)
-  let orderProducts = orderItem[0].products;
-  
-  res.render("userpages/userViewOrder",{orderProducts,orderId})
-})
-router.post( '/changeOrderStatus', verifyLogin, async(req,res)=>{
-      let orderId = req.body.orderId;
-      console.log("0000000000_orderId", orderId)
-      let orderStatus = await userHelpers.changeOrderStatus(orderId)
-      //console.log("orderStatu:",orderStatus) 
-  res.json({status:true})
-})
+router.post('/confirmOrder',verifyLogin,checkOutController.postConfirmOrder) 
 
-router.get('/orderCancelled',verifyLogin,(req,res)=>{
+router.get('/orderSuccess',verifyLogin,checkOutController.getOrderSuccess)
 
-  res.render("userpages/userOrderCancelled")
-})
+router.post('/verifyPayment',verifyLogin, checkOutController.postVerifyPayment)
 
-router.post('/verifyPayment',verifyLogin, (req,res)=>{
-  //console.log("ZZZZZZZZZZZZZZZZZZZZZZZZZZ")
-  console.log("req.body['order[response][receipt]']:",req.body['order[response][receipt]']);
-  console.log("req.body-------req.body")
-  userHelpers.verifyPaymentResult(req.body).then(()=>{
-    console.log("PPPPPPPPPPPPPPPP")
-    console.log("req.body['order[response][receipt]']:",req.body['order[response][receipt]']);
-    userHelpers.changePaymentStatus(req.body['order[response][receipt]']).then( ()=>{
-        console.log("Payment success")
-      res.json({status:true})
-    })
+router.post('/applyCoupon',verifyLogin, checkOutController.postApplyCoupon)
 
-  }).catch((err)=>{
-    console.log(err)
-    res.json({status:false,errMsg:''})
-  })
-})
+router.get('/viewOrder',verifyLogin, userOrderController.getViewOrder)
 
-router.post('/applyCoupon',verifyLogin, async(req,res)=>{
-  let userId = req.session.user._id;
-  let couponDetails= req.body;
-   
-  let totalPrice = await cartHelpers.getTotoalPrice(userId)
-  let couponData = await checkOutHelpers.checkCouponValidity(couponDetails.couponId,userId)
+router.get('/viewOrderProducts/:id',verifyLogin, userOrderController.getViewOrderProducts)
 
-  //console.log("couponUsage:",couponData)
-   req.session.couponData = couponData; 
-   req.session.totalAmount = req.body.totalPrice;
-    couponData.totalPrice=totalPrice
-   console.log( "fxXFXXFXFX_couponData:",couponData)
+router.post( '/changeOrderStatus', verifyLogin, userOrderController.postChangeOrderStatus)
 
-  /**
-   * 
-   * couponData contains all the value related to the validity of the 
-   * coupon 
-   * if coupon is expired it shows expiry:true
-   * if coupon is valied it returns the coupon data
-   * 
-   */
-  res.json({couponData})
-
-  
-})
+router.get('/orderCancelled',verifyLogin, userOrderController.getOrderCancelled)
 
 module.exports = router;
 
