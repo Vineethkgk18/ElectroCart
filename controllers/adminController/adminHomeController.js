@@ -11,15 +11,20 @@ module.exports ={
          let codCount = await adminDashboardHelpers.getCodCount()
          let onlineCount = await adminDashboardHelpers.getOnlineCount()
           //let banner = await bannerHelpers.viewBanner();
-          //let MonthlySales = await adminDashboardHelpers.getTotalSalesMonthly()
-          // let MonthlySales =  await adminDashboardHelpers.getTotalMonthly()
-          // console.log("QQQQQQ_MonthlySales", MonthlySales)
-          // console.log("QQQQ__banner",banner)
-
-          console.log(" AAAA_onlineCount:",onlineCount)
-          console.log("BBBB_codCount:", codCount)
-          console.log("deliveredCount:",deliveredCount)
-      res.render('adminpages/adminHome',{userCount,orderCount,deliveredCount})
+          let MonthlySales = await adminDashboardHelpers.getTotalSalesMonthly()
+          console.log("MonthlySales._id.year :", MonthlySales[0]._id.year);
+          console.log(" MonthlySales._id.month :",MonthlySales[0]._id.month );
+          console.log("MonthlySales.toatal:",MonthlySales[0].total)
+          console.log("MonthlySales.toatal:",MonthlySales[1].total)
+          monthlySalesOctober = MonthlySales[1].total/1000000;
+          monthlySalesNovember = MonthlySales[0].total/1000000;
+          totalSales = monthlySalesOctober + monthlySalesNovember;
+          //let MonthlySales =  await adminDashboardHelpers.getTotalMonthly()
+          console.log("QQQQQQ_MonthlySales", MonthlySales)
+          // console.log(" AAAA_onlineCount:",onlineCount)
+          // console.log("BBBB_codCount:", codCount)
+          // console.log("deliveredCount:",deliveredCount)
+      res.render('adminpages/adminHome',{userCount,orderCount,deliveredCount,monthlySalesOctober,monthlySalesNovember,totalSales})
        // res.render('adminpages/adminHome')
       },
     getAdminSignUp:(req,res)=>{

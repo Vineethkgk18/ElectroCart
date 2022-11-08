@@ -1,7 +1,7 @@
-const db= require('../config/connection')
-const collection=require('../config/collections')
+const db= require('../../config/connection')
+const collection=require('../../config/collections')
 const bcrypt = require('bcrypt')
-const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../config/collections');
+const { PRODUCT_COLLECTION, ORDER_COLLECTION } = require('../../config/collections');
 const { DeploymentList } = require('twilio/lib/rest/preview/deployed_devices/fleet/deployment');
 //const { response } = require('express');
 const express = require('express');

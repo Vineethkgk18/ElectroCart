@@ -136,8 +136,8 @@
 
                             
                             <div class="ms-3">
-                                <p class="mb-2">Today Sale</p>
-                                <h6 class="mb-0">$1234</h6>
+                                <p class="mb-2">Total Sales</p>
+                                <h6 class="mb-0">₹{{totalSales }}M</h6>
                             </div>
 
 
@@ -156,7 +156,7 @@
                         <div class="bg-secondary rounded d-flex align-items-center justify-content-between p-4">
                             {{!-- <i class="fa fa-chart-area fa-3x text-primary"></i> --}}
                             <div class="ms-3">
-                                <p class="mb-2">Today Orders</p>
+                                <p class="mb-2">Total Orders</p>
                                 <h6 class="mb-0">{{orderCount}}</h6>
                             </div>
                         </div>
@@ -180,7 +180,7 @@
                 </div>
             <!-- Sales Chart Start -->
             <div class="container-fluid pt-4 px-4">
-                <div class="row">
+                <div class="row ">
                     <div class="col-sm-12 col-xl-12">
                         <div class="bg-secondary text-center rounded p-4">
                             <div class="d-flex align-items-center justify-content-between mb-4">
@@ -283,7 +283,7 @@ new Chart("myChart", {
 <script>
 var xValues = ["July", "Aug", "Sep", "Oct", "Nov"];
 //var yValues = [1000, 1149, 444, {{monthamount.Tamount}}, 0];
-var yValues = [1000, 1149, 444, 500, 0];
+var yValues = [1.009489, 1.149489, 4.449489, {{monthlySalesOctober}}, {{monthlySalesNovember}} ];
 var barColors = ["red", "green","blue","orange","brown"];
 new Chart("myChartsecond", {
   type: "bar",
@@ -305,4 +305,3 @@ new Chart("myChartsecond", {
 </script>
 
 </html>
-
