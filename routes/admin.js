@@ -78,7 +78,8 @@ router.post('/adminAddBanner',upload.array('Image',1), adminBannerController.pos
 
 
 router.get('/order',async(req,res)=>{
-  let order = await adminHelpers.getOrderDetails()  
+  let order = await adminHelpers.getOrderDetails()
+  order = order.reverse(); 
   res.render('adminpages/adminOrderManagement',{order})
 })
 
