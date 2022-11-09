@@ -15,6 +15,7 @@ module.exports ={
         try {
             let userId = req.session.user._id;
             let order = await userHelpers.getOrder(userId);
+            order = order.reverse();
             res.render('userpages/viewOrderHistory',{users:true,order})
         } catch (error) {
             next(error)
